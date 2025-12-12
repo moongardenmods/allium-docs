@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2019",
+    "lib": ["ESNext", "DOM"],
+    "rootDir": ".",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "declaration": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "skipLibCheck": true
+  },
+  "vueCompilerOptions": {
+    "experimentalDisableTemplateSupport": true
+  },
+  "include": ["docs/.vitepress/theme/index.mts"],
+  "exclude": ["node_modules/"]
+}
