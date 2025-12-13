@@ -72,7 +72,7 @@ ExampleObject.testMethod("hello!");
 ExampleObject = require("com.example.ExampleObject")
 
 value = ExampleObject.FIELD
-ExampleObject.testMethod("Hello!")
+ExampleObject.testMethod("hello!")
 ```
 :::
 
@@ -107,7 +107,7 @@ import com.example.ExampleObject;
 import com.example.CastedObject;
 // ...
 ExampleObject example = new ExampleObject(1, 2, 3);
-CastedObject castedObject = (ExampleObject) example;
+CastedObject castedObject = (CastedObject) example;
 ```
 ```Lua
 ExampleObject = require("com.example.ExampleObject")
@@ -188,7 +188,7 @@ boolean notLongString = foobar.invert(longString);
 ```Lua
 FooBar = require("com.example.FooBar")
 
-foobar = new FooBar(10, 7000000000)
+foobar = FooBar(10, 7000000000)
 foobar:addPrecise(0.1, 0.0001)
 fineList = foobar:getFineList()
 veryFineList = foobar:getVeryFineList()
