@@ -1,7 +1,7 @@
 {
   "name": "allium-wiki",
   "version": "1.0.0",
-  "description": "",
+  "description": "Wiki for the Allium Minecraft mod",
   "main": "index.js",
   "scripts": {
     "dev": "vitepress dev docs",
@@ -9,7 +9,7 @@
     "preview": "vitepress preview docs"
   },
   "keywords": [],
-  "author": "",
+  "author": "hugeblank",
   "license": "ISC",
   "packageManager": "pnpm@10.23.0",
   "dependencies": {

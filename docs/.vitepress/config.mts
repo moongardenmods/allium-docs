@@ -5,6 +5,12 @@ import { groupIconVitePlugin, groupIconMdPlugin } from 'vitepress-plugin-group-i
 export default defineConfig({
   title: "Allium",
   description: "The Lua script loader for Minecraft",
+  head: [
+    [
+      'link',
+      { rel: 'icon', type: 'image/png', href: '/icon.png' }
+    ],
+  ],
   themeConfig: {
     logo: "/icon.png",
     // https://vitepress.dev/reference/default-theme-config

@@ -23,6 +23,11 @@ import net.minecraft.world.level.block.state.BlockState;
 BlockState = require("net.minecraft.world.level.block.state.BlockState")
 ```
 :::
+::: tip
+You are not beholden to Java's whims. The variable that the imported class is stored in can be named whatever you like. 
+
+However, it's good practice to keep naming consistent between Lua and Java to avoid confusion. All Lua code on this wiki follows this standard.
+:::
 
 #### Nested Class
 
@@ -89,6 +94,27 @@ ExampleObject = require("com.example.ExampleObject")
 example = ExampleObject(1, 2, 3)
 value = example.field
 example:updateField(value+1) 
+```
+:::
+
+### Casting
+
+See [Java Utilities - `java.cast()`](/reference/java-utils#java-cast-object-class)
+
+::: code-group
+```Java
+import com.example.ExampleObject;
+import com.example.CastedObject;
+// ...
+ExampleObject example = new ExampleObject(1, 2, 3);
+CastedObject castedObject = (ExampleObject) example;
+```
+```Lua
+ExampleObject = require("com.example.ExampleObject")
+CastedObject = require("com.example.CastedObject")
+
+example = ExampleObject(1, 2, 3)
+castedObject = java.cast(example, CastedObject)
 ```
 :::
 
@@ -174,15 +200,32 @@ notLongString = foobar:invert(longString)
 :::
 
 Types are converted as follows:
-|  Lua Type  |                             Java Type                              | Notes                                                                                                                                                                              |
-| :--------: | :----------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-|   `nil`    |                       `null`, `void`, `Void`                       | Can only be used as `void` or `Void` when describing a method to create or override during class building.                                                                         |
-|  `number`  | `int`, `long`, `float`, `double`, `Int`, `Long`, `Float`, `Double` |                                                                                                                                                                                    |
-| `boolean`  |                        `boolean`, `Boolean`                        |                                                                                                                                                                                    |
-|  `string`  |                              `String`                              |                                                                                                                                                                                    |
-| `function` |                                 *                                  | When going from Lua to Java, converted to a functional interface (java interface with only one method), where applicable. see [Callback Methods](./#callback-methods)              |
-|  `table`   |                        `List`, `Set`, `Map`                        | When going from Java to Lua, converted only if the java method's return value is annotated with `@CoerceToNative`. When going from Lua to Java, converted unconditionally.         |
-| `userdata` |                        *, `Class`, `EClass`                        | Java classes and objects are userdata and can be used where needed. Additionally, where a `Class` or `EClass` are expected, a userdata passed directly from `require` can be used. |
+|  Lua Type  |                                              Java Type                                               | Notes                                                                                                                                                                                    |
+| :--------: | :--------------------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|   `nil`    |                                        `null`, `void`, `Void`                                        | Can only be used as `void` or `Void` when describing a method to create or override during class building.                                                                               |
+|  `number`  | `byte`, `short`, `int`, `long`, `float`, `double`, `Byte`, `Short`, `Int`, `Long`, `Float`, `Double` | If a number greater than the max size of the Java type is provided, it will simply overflow and wrap around. (ex. if passing 256 where a byte is expected, the resulting byte will be 0) |
+| `boolean`  |                                         `boolean`, `Boolean`                                         |                                                                                                                                                                                          |
+|  `string`  |                                               `String`                                               |                                                                                                                                                                                          |
+| `function` |                                                  *                                                   | When going from Lua to Java, converted to a functional interface (java interface with only one method), where applicable. see [Callback Methods](./#callback-methods)                    |
+|  `table`   |                                         `List`, `Set`, `Map`                                         | When going from Java to Lua, converted only if the java method's return value is annotated with `@CoerceToNative`. When going from Lua to Java, converted unconditionally.               |
+| `userdata` |                                         *, `Class`, `EClass`                                         | Java classes and objects are userdata and can be used where needed. Additionally, where a `Class` or `EClass` are expected, a userdata passed directly from `require` can be used.       |
+
+### Throwing exceptions
+
+See [Java Utilities - `java.throw()`](/reference/java-utils#java-throw-exception)
+
+::: code-group
+```Java
+import java.lang.IllegalStateException;
+// ...
+throw new IllegalStateException("Oh no!");
+```
+```Lua
+IllegalStateException = require("java.lang.IllegalStateException")
+
+java.throw(IllegalStateException("Oh no!"))
+```
+:::
 
 ### Functional Interfaces
 
