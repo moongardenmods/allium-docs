@@ -21,12 +21,12 @@ See [Fundamentals - Casting](/reference/fundamentals#casting)
 
 ## `java.coerce(tableLike, class)`
 
-Coerces `tableLike`, to a table.
+Coerces `tableLike` to a table.
 
 ### Parameters
 
 1. `tableLike` - `userdata [instance]`: A table-like object instance (one of `Map`, `List`, or `Set`).
-2. `class` - `userdata [class]`: A class representing the type of both the type of `tableLike`, and the types of the elements within `tableLike`.
+2. `class` - `userdata [class]`: A class representing both the type of `tableLike`, and the types of the elements within `tableLike`.
 
 ### Returns
 
@@ -143,6 +143,12 @@ Gets a raw class or interface representation as an `EClass` (enhanced representa
 
 ### Usage
 
+```Lua
+eClass = java.getRawClass("net.minecraft.world.level.block.Blocks")
+eClass:fields():forEach(function(field)
+    print(field:name())
+end)
+```
 
 
 ## `java.throw(exception)`
@@ -152,10 +158,6 @@ Throw an exception in Java.
 ### Parameters
 
 1. `exception` - `userdata [instance]`: The exception instance to be thrown.
-
-### Returns
-
-- `nil`
 
 ### Usage
 
@@ -176,4 +178,4 @@ Provides a class builder extending from the given `superclass`. Optionally appli
 - `userdata [instance]`: A class builder.
 
 ### Usage
-See [Class Building](/reference/class-building).
+See [Class Building - Standard Class Builder](/reference/class-building#standard-class-builder).

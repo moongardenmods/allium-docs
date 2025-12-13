@@ -246,7 +246,7 @@ ExampleObject = require("com.example.ExampleObject")
 
 example = ExampleObject(1, 2, 3)
 message = "Hello World!"
-numbers = example.getList()
+numbers = example:getList()
 numbers:forEach(function(otherObj)
     otherObj:sendMessage(message)
     otherObj:flush()
