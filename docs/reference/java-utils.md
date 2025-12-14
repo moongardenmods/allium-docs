@@ -179,3 +179,17 @@ Provides a class builder extending from the given `superclass`. Optionally appli
 
 ### Usage
 See [Class Building - Standard Class Builder](/reference/class-building#standard-class-builder).
+
+## Primitives
+
+The `java` global also provides all of the primitives as `userdata [class]` for use in class building.
+
+They are:
+- `java.boolean`
+- `java.byte`
+- `java.short`
+- `java.int`
+- `java.long`
+- `java.float`
+- `java.double`
+- `java.char`
