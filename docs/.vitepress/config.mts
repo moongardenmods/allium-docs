@@ -39,9 +39,11 @@ export default defineConfig({
         text: 'Reference',
         items: [
           { text: 'Fundamentals', link: '/reference/fundamentals' },
+          { text: 'Scripts', link: '/reference/scripts' },
           { text: 'Java Utilities', link: '/reference/java-utils' },
           { text: 'Class Building', link: '/reference/class-building' },
           { text: 'Mixins', link: '/reference/mixins' },
+          { text: 'Extensions', link: '/reference/extensions' },
         ]
       }
     ],
