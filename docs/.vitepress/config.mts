@@ -57,6 +57,7 @@ export default defineConfig({
     config(md) {
       md.use(groupIconMdPlugin)
     },
+    lineNumbers: true,
   },
 
   vite: {

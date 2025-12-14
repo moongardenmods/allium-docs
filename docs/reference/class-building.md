@@ -12,9 +12,38 @@ This page is under construction
 
 ## Standard Class Builder
 
-The following functions use a hypothetical `classBuilder` instance obtained from calling [`java.extendClass()`](/reference/java-utils#java-extendclass-superclass-interfaces-access)
+::: warning
+The standard class builder is one of the most in-development aspects of Allium. Expect it to change dramatically over the course of the Beta.
+:::
 
-TODO: Create an example class and build out a lua file through each functions "usage" section
+Given the following class:
+```Java [Animal.java]
+package com.example;
+
+public class Animal {
+
+    protected int speed;
+
+    public Animal(int speed) {
+        this.speed = speed;
+    }
+
+    protected boolean makesNoise() {
+        return true;
+    }
+
+    public String noise(boolean chasing, int packSize) {
+        return makesNoise() ? "*rustle, rustle*" : "*silence*";
+    }
+}
+```
+
+The following usages of each method will build out a `Dog` class in Lua, starting with:
+```Lua [Dog.lua] 
+local Animal = require("com.example.Animal")
+
+local dogClassBuilder = java.extendClass(Animal)
+```
 
 ### `classBuilder:overrideMethod(methodName, parameters, access, func)`
 
@@ -29,30 +58,58 @@ Override an existing method of the parent class.
 
 #### Usage
 
-
+```Lua:line-numbers=4 [Dog.lua]
+dogClassBuilder:overrideMethod("noise", {java.boolean, java.int}, {}, function(this, chasing, packSize)  -- [!code highlight]
+    if this:makesNoise() then
+        -- We create isRunning() later, but can use it here!
+        if this:isRunning() or chasing then 
+            return "*pant*, *pant*"
+        else
+            if packSize > 2 then
+                return "*awoo!*"
+            else
+                return "*woof!* *woof!*"
+            end
+        end
+    end
+    return this.super:noise()
+end)  -- [!code highlight]
+```
 
 ### `classBuilder:createMethod(methodName, parameters, returnClass, access, func)`
 
-
+Create an entirely new method on the class.
 
 #### Parameters
 
-
+1. `methodName` - `string`: The method name. Must not exist in any parent classes.
+2. `parameters` - `table<userdata [class]>`: A table representing the parameter types in order.
+3. `returnClass` - `userdata [class]`: The class to be returned by this method.
+4. `access` - `{ abstract = boolean?, static = boolean? }`: Access flags for overriding the method.
+5. `func` - `function`: The function to call for handling when the method is invoked. If the parameter `access.abstract` is `true`, this parameter is ignored.
 
 #### Usage
 
-
+```Lua:line-numbers=14 [Dog.lua]
+dogClassBuilder:createMethod("isRunning", {}, java.boolean, {}, function(this)  -- [!code highlight]
+    return this.speed >= 5
+end)  -- [!code highlight]
+```
 
 ### `classBuilder:build()`
 
-
+Builds the class.
 
 #### Returns
 
-
+- `userdata [class]`: The completed class. 
 
 #### Usage
 
-
+```Lua:line-numbers=17 [Dog.lua]
+local Dog = dogClassBuilder:build() -- [!code highlight]
+local inu = Dog(0)
+print(inu:noise()) -- prints "*woof!* *woof!*"
+```
 
 ## Mixin Class Builder

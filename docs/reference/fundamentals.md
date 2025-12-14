@@ -44,12 +44,12 @@ local OffsetType = require(
 ```Java
 import com.example.ExampleObject;
 // ...
-ExampleObject example = new ExampleObject(1, 2, 3);
+ExampleObject example = new ExampleObject(1, 2, 3); // [!code highlight]
 ```
 ```Lua
 local ExampleObject = require("com.example.ExampleObject")
 
-local example = ExampleObject(1, 2, 3)
+local example = ExampleObject(1, 2, 3) -- [!code highlight]
 ```
 :::
 
@@ -59,14 +59,14 @@ local example = ExampleObject(1, 2, 3)
 ```Java
 import com.example.ExampleObject;
 // ...
-int value = ExampleObject.FIELD;
-ExampleObject.testMethod("hello!");
+int value = ExampleObject.FIELD; // [!code highlight]
+ExampleObject.testMethod("hello!"); // [!code highlight]
 ```
 ```Lua
 local ExampleObject = require("com.example.ExampleObject")
 
-local value = ExampleObject.FIELD
-ExampleObject.testMethod("hello!")
+local value = ExampleObject.FIELD -- [!code highlight]
+ExampleObject.testMethod("hello!") -- [!code highlight]
 ```
 :::
 
@@ -79,15 +79,15 @@ In Lua, the `.` changes to a `:` for instance method invocation.
 import com.example.ExampleObject;
 // ...
 ExampleObject example = new ExampleObject(1, 2, 3);
-double value = example.field;
-example.updateField(value+1);
+double value = example.field; // [!code highlight]
+example.updateField(value+1); // [!code highlight]
 ```
 ```Lua
 local ExampleObject = require("com.example.ExampleObject")
 
 local example = ExampleObject(1, 2, 3)
-local value = example.field
-local example:updateField(value+1) 
+local value = example.field -- [!code highlight]
+local example:updateField(value+1) -- [!code highlight]
 ```
 :::
 
@@ -101,14 +101,14 @@ import com.example.ExampleObject;
 import com.example.CastedObject;
 // ...
 ExampleObject example = new ExampleObject(1, 2, 3);
-CastedObject castedObject = (CastedObject) example;
+CastedObject castedObject = (CastedObject) example; // [!code highlight]
 ```
 ```Lua
 local ExampleObject = require("com.example.ExampleObject")
 local CastedObject = require("com.example.CastedObject")
 
 local example = ExampleObject(1, 2, 3)
-local castedObject = java.cast(example, CastedObject)
+local castedObject = java.cast(example, CastedObject) -- [!code highlight]
 ```
 :::
 
@@ -212,12 +212,12 @@ See [Java Utilities - `java.throw()`](/reference/java-utils#java-throw-exception
 ```Java
 import java.lang.IllegalStateException;
 // ...
-throw new IllegalStateException("Oh no!");
+throw new IllegalStateException("Oh no!"); // [!code highlight]
 ```
 ```Lua
 local IllegalStateException = require("java.lang.IllegalStateException")
 
-java.throw(IllegalStateException("Oh no!"))
+java.throw(IllegalStateException("Oh no!")) -- [!code highlight]
 ```
 :::
 
@@ -230,10 +230,10 @@ import com.example.ExampleObject;
 ExampleObject example = new ExampleObject(1, 2, 3);
 String message = "Hello World!";
 List<SomeOtherObject> numbers = example.getList();
-numbers.forEach((otherObj) -> {
-    otherObj.sendMessage(message);
-    otherObj.flush();
-});
+numbers.forEach((otherObj) -> { // [!code highlight]
+    otherObj.sendMessage(message); // [!code highlight]
+    otherObj.flush(); // [!code highlight]
+}); // [!code highlight]
 ```
 ```Lua
 local ExampleObject = require("com.example.ExampleObject")
@@ -241,10 +241,10 @@ local ExampleObject = require("com.example.ExampleObject")
 local example = ExampleObject(1, 2, 3)
 local message = "Hello World!"
 local numbers = example:getList()
-numbers:forEach(function(otherObj)
-    otherObj:sendMessage(message)
-    otherObj:flush()
-end)
+numbers:forEach(function(otherObj) -- [!code highlight]
+    otherObj:sendMessage(message) -- [!code highlight]
+    otherObj:flush() -- [!code highlight]
+end) -- [!code highlight]
 ```
 :::
 ::: tip
@@ -261,7 +261,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.lang.Integer;
 // ...
-List<Integer> intList = new ArrayList<>();
+List<Integer> intList = new ArrayList<>(); // [!code highlight]
 intList.addAll(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 9);
 // ...
 ```
@@ -269,7 +269,7 @@ intList.addAll(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 9);
 local ArrayList = require("java.util.ArrayList")
 local Integer = require("java.lang.Integer")
 
-local intList = ArrayList[{Integer}]()
+local intList = ArrayList[{Integer}]() -- [!code highlight]
 intList:addAll(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 9)
 ```
 :::

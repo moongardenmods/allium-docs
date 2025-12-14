@@ -304,7 +304,7 @@ Sugars are annotations that are applied to additional parameters that are applie
 
 ### `mixin.sugar.localref(type, annotation, mutable)`
 
-Creates a parameter with an [`@Local`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Local.html) annotation.
+Creates a parameter with a [`@Local`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Local.html) annotation.
 
 See [MixinExtras Wiki - Local](https://github.com/LlamaLad7/MixinExtras/wiki/Local) for more information.
 
@@ -327,7 +327,7 @@ Setting `mutable` to `true` changes the parameter's type from the one passed in 
 
 ### `mixin.sugar.share(type, annotation)`
 
-Creates a parameter with an [`@Share`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Share.html) annotation.
+Creates a parameter with a [`@Share`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Share.html) annotation.
 
 See [MixinExtras Wiki - Share](https://github.com/LlamaLad7/MixinExtras/wiki/Share) for more information.
 
@@ -344,7 +344,7 @@ See [MixinExtras Wiki - Share](https://github.com/LlamaLad7/MixinExtras/wiki/Sha
 
 ### `mixin.sugar.cancellable()`
 
-Creates a parameter with an [`@Cancellable`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Cancellable.html) annotation.
+Creates a parameter with a [`@Cancellable`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/sugar/Cancellable.html) annotation.
 
 See [MixinExtras Wiki - Cancellable](https://github.com/LlamaLad7/MixinExtras/wiki/Cancellable) for more information.
 
@@ -380,6 +380,6 @@ TODO: A better example
 
 ```Lua
 methodHook:hook(function(this, ...)
-
+    -- your code
 end)
 ```

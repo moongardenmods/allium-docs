@@ -72,9 +72,9 @@ local Integer = require("java.lang.Integer")
 local String = require("java.lang.String")
 local CoerceExample = require("com.example.CoerceExample")
 
-local list = java.coerce(CoerceExample.getList(), List[{Integer}])
-local set = java.coerce(CoerceExample.getSet(), Set[{Integer}])
-local map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}])
+local list = java.coerce(CoerceExample.getList(), List[{Integer}]) -- [!code highlight]
+local set = java.coerce(CoerceExample.getSet(), Set[{Integer}]) -- [!code highlight]
+local map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}]) -- [!code highlight]
 ```
 
 ## `java.wrap(value, class)`
@@ -95,7 +95,7 @@ Wraps a Lua value in a provided class. Seldom useful due to type conversion bein
 ```Lua
 local Double = require("java.lang.Double")
 
-local wrappedPi = java.wrap(3.14159265, Double)
+local wrappedPi = java.wrap(3.14159265, Double) -- [!code highlight]
 ```
 
 ## `java.instanceOf(object, class)`
@@ -118,7 +118,7 @@ local Blocks = require("net.minecraft.world.level.block.Blocks")
 local VegetationBlock = require("net.minecraft.world.level.block.VegetationBlock")
 
 local result
-if java.instanceOf(Blocks.ALLIUM, VegetationBlock) then
+if java.instanceOf(Blocks.ALLIUM, VegetationBlock) then -- [!code highlight]
     result = "is"
 else
     result = "is not"
@@ -144,7 +144,7 @@ Gets a raw class or interface representation as an `EClass` (enhanced representa
 ### Usage
 
 ```Lua
-local eClass = java.getRawClass("net.minecraft.world.level.block.Blocks")
+local eClass = java.getRawClass("net.minecraft.world.level.block.Blocks") -- [!code highlight]
 eClass:fields():forEach(function(field)
     print(field:name())
 end)
@@ -171,7 +171,7 @@ Provides a class builder extending from the given `superclass`. Optionally appli
 
 1. `superclass` - `userdata [class]`: The parent class of the class being built.
 2. `interfaces` - `table<userdata [class]>?`: An optional table of interfaces to be applied to the class.
-3. `access` - `{ static = boolean?, interface = boolean?, abstract = boolean? }`: An optional table of flags to define properties of the class.
+3. `access` - `{ static = boolean?, interface = boolean?, abstract = boolean? }?`: An optional table of flags to define properties of the class.
 
 ### Returns
 
