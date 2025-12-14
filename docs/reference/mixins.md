@@ -6,6 +6,13 @@ outline: [2, 3]
 
 The following functions are provided to scripts via the `mixin` global.
 
+::: danger 
+Mixins are a very complicated topic that's very hard to grasp without a decent understanding of the JVM. If you would like to learn more about them, check out:
+1. [Mixin's own wiki](https://github.com/SpongePowered/Mixin/wiki).
+2. The [Mixin Cheatsheet](https://github.com/dblsaiko/mixin-cheatsheet/blob/master/README.md).
+3. [MixinExtras' Wiki](https://github.com/LlamaLad7/MixinExtras/wiki).
+:::
+
 ::: warning
 This page is under construction
 :::
@@ -15,10 +22,6 @@ This page is under construction
 ### `mixin.to(targetClass, interfaces, targetEnvironment, duck)`
 
 Mix into a specified class. 
-
-::: danger 
-Mixins are a very complicated topic that's very hard to grasp without a decent understanding of the JVM. If you would like to learn more about them, check out [Mixin's own wiki](https://github.com/SpongePowered/Mixin/wiki).
-:::
 
 #### Parameters
 
@@ -122,6 +125,10 @@ The following functions are provided on the `annotation` index of the `mixin` gl
 
 Most of these functions represent injector annotations. Only one injector annotation can be provided per-method. The exceptions to this are `expression()` and `definition()`, which *can* be provided more than once per method.
 
+::: tip
+Clicking on the annotation names will take you to their javadoc.
+:::
+
 ### Annotation Tables
 
 All of these functions expect a table as the first parameter. This table gets recursively parsed and applied to the annotation interface that the function represents. The method names become keys, and the return values become the value. Arrays are a standard table with number indices. 
@@ -140,11 +147,11 @@ are valid ways to define an `@At` annotation.
 
 ### `mixin.annotation.inject(annotation)`
 
-Creates an `@Inject` annotation.
+Creates an [`@Inject`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/Inject.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Inject` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@Inject`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/Inject.html) annotation.
 
 #### Returns
 
@@ -154,11 +161,11 @@ Creates an `@Inject` annotation.
 
 ### `mixin.annotation.modifyArg(annotation, targetType)`
 
-Creates a `@ModifyArg` annotation.
+Creates a [`@ModifyArg`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/ModifyArg.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyArg` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@ModifyArg`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/ModifyArg.html) annotation.
 2. `targetType` - `string`: A type descriptor string of the argument being modified.
 
 #### Returns
@@ -169,11 +176,11 @@ Creates a `@ModifyArg` annotation.
 
 ### `mixin.annotation.modifyArgs(annotation)`
 
-Creates a `@ModifyArgs` annotation.
+Creates a [`@ModifyArgs`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/ModifyArgs.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyArgs` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@ModifyArgs`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/injection/ModifyArgs.html) annotation.
 
 #### Returns
 
@@ -183,11 +190,11 @@ Creates a `@ModifyArgs` annotation.
 
 ### `mixin.annotation.modifyExpressionValue(annotation, targetType)`
 
-Creates a `@ModifyExpressionValue` annotation.
+Creates a [`@ModifyExpressionValue`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/ModifyExpressionValue.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyExpressionValue` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@ModifyExpressionValue`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/ModifyExpressionValue.html) annotation.
 2. `targetType` - `string`: A type descriptor string of the argument being modified.
 
 #### Returns
@@ -198,11 +205,11 @@ Creates a `@ModifyExpressionValue` annotation.
 
 ### `mixin.annotation.modifyReturnValue(annotation)`
 
-Creates a `@ModifyReturnValue` annotation.
+Creates a [`@ModifyReturnValue`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/ModifyReturnValue.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyReturnValue` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@ModifyReturnValue`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/ModifyReturnValue.html) annotation.
 
 #### Returns
 
@@ -212,11 +219,11 @@ Creates a `@ModifyReturnValue` annotation.
 
 ### `mixin.annotation.wrapMethod(annotation)`
 
-Creates a `@WrapMethod` annotation.
+Creates a [`@WrapMethod`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/wrapmethod/WrapMethod.html) annotation.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@WrapMethod` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@WrapMethod`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/injector/wrapmethod/WrapMethod.html) annotation.
 
 #### Returns
 
@@ -244,11 +251,11 @@ Creates a custom injector annotation.
 
 ### `mixin.annotation.expression(annotation)`
 
-Creates an `@Expression` annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
+Creates an [`@Expression`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/expression/Expression.html) annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Expression` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@Expression`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/expression/Expression.html) annotation.
 
 #### Returns
 
@@ -258,11 +265,11 @@ Creates an `@Expression` annotation. This method does not produce an injector an
 
 ### `mixin.annotation.definition(annotation)`
 
-Creates a `@Definition` annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
+Creates a [`@Definition`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/expression/Definition.html) annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
 
 #### Parameters
 
-1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Definition` annotation.
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the [`@Definition`](https://javadoc.io/doc/io.github.llamalad7/mixinextras-fabric/latest/com/llamalad7/mixinextras/expression/Definition.html) annotation.
 
 #### Returns
 
