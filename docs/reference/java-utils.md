@@ -65,16 +65,16 @@ public class CoerceExample {
 ```
 
 ```Lua [coerceExample.lua]
-List = require("java.util.List")
-Set = require("java.util.Set")
-Map = require("java.util.Map")
-Integer = require("java.lang.Integer")
-String = require("java.lang.String")
-CoerceExample = require("com.example.CoerceExample")
+local List = require("java.util.List")
+local Set = require("java.util.Set")
+local Map = require("java.util.Map")
+local Integer = require("java.lang.Integer")
+local String = require("java.lang.String")
+local CoerceExample = require("com.example.CoerceExample")
 
-list = java.coerce(CoerceExample.getList(), List[{Integer}])
-set = java.coerce(CoerceExample.getSet(), Set[{Integer}])
-map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}])
+local list = java.coerce(CoerceExample.getList(), List[{Integer}])
+local set = java.coerce(CoerceExample.getSet(), Set[{Integer}])
+local map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}])
 ```
 
 ## `java.wrap(value, class)`
@@ -93,9 +93,9 @@ Wraps a Lua value in a provided class. Seldom useful due to type conversion bein
 ### Usage
 
 ```Lua
-Double = require("java.lang.Double")
+local Double = require("java.lang.Double")
 
-wrappedPi = java.wrap(3.14159265, Double)
+local wrappedPi = java.wrap(3.14159265, Double)
 ```
 
 ## `java.instanceOf(object, class)`
@@ -114,8 +114,8 @@ Check whether the given object is of the given class.
 ### Usage
 
 ```Lua
-Blocks = require("net.minecraft.world.level.block.Blocks")
-VegetationBlock = require("net.minecraft.world.level.block.VegetationBlock")
+local Blocks = require("net.minecraft.world.level.block.Blocks")
+local VegetationBlock = require("net.minecraft.world.level.block.VegetationBlock")
 
 local result
 if java.instanceOf(Blocks.ALLIUM, VegetationBlock) then
@@ -144,7 +144,7 @@ Gets a raw class or interface representation as an `EClass` (enhanced representa
 ### Usage
 
 ```Lua
-eClass = java.getRawClass("net.minecraft.world.level.block.Blocks")
+local eClass = java.getRawClass("net.minecraft.world.level.block.Blocks")
 eClass:fields():forEach(function(field)
     print(field:name())
 end)

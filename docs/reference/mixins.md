@@ -16,8 +16,8 @@ This page is under construction
 
 Mix into a specified class. 
 
-::: info
-Mixins are a very complicated topic that's very hard to understand without a decent understanding of Java. If you would like to learn more about them, check out [Mixin's own wiki](https://github.com/SpongePowered/Mixin/wiki).
+::: danger 
+Mixins are a very complicated topic that's very hard to grasp without a decent understanding of the JVM. If you would like to learn more about them, check out [Mixin's own wiki](https://github.com/SpongePowered/Mixin/wiki).
 :::
 
 #### Parameters
@@ -27,7 +27,7 @@ Mixins are a very complicated topic that's very hard to understand without a dec
 3. `targetEnvironment` - `string?`: The target environment, one of `"client"` or `"server"`. Leave `nil` to apply to common code.
 4. `duck` - `boolean?`: Whether to make this mixin a duck interface.
 
-::: info
+::: warning
 Unlike standard class building, class names are passed as strings. This is because:
 1. mixins *must not* load the class they're mixing into, otherwise the application of the mixin will fail.
 2. mixins are registered before the game properly launches (`mixin` Allium entrypoint, `preLaunch` Fabric entrypoint). In this pre-launch environment it is best practice to not load any game classes.
@@ -41,13 +41,15 @@ Unlike standard class building, class names are passed as strings. This is becau
 
 See [Class Building - Mixin Class Builder](/reference/class-building#mixin-class-builder)
 
-### `mixin.get(eventId)`
+---
 
-Get a reference to a mixin injection with the given `eventId`. This function can (and should) be used in `static` and `dynamic` script entrypoints. 
+### `mixin.get(hookId)`
+
+Get a reference to a mixin injection with the given `hookId`. This function can (and should) be used in `static` and `dynamic` script entrypoints. 
 
 #### Parameters
 
-1. `eventId` - `string`: The event ID of the injector created in the `mixin` entrypoint.
+1. `hookId` - `string`: The hook ID of the injector created in the `mixin` entrypoint.
 
 #### Returns
 
@@ -57,8 +59,10 @@ Get a reference to a mixin injection with the given `eventId`. This function can
 
 Assuming there exists an injection with the ID `"increase_cactus_height"`:
 ```Lua
-methodHook = mixin.get("increase_cactus_height")
+local methodHook = mixin.get("increase_cactus_height")
 ```
+
+---
 
 ### `mixin.quack(mixinId)`
 
@@ -74,19 +78,197 @@ Provides the duck interface associated to a given ID. Used to access the accesso
 
 #### Usage
 
-TODO: Actually produce the class, and example mixin here
+Provided the class:
+```Java [Dummy.java]
+package com.example;
 
-Assuming a mixin has been applied to class `Dummy`, an accessor was created for field `foobar`, and then was built with the ID `"accessible_targetclass"`:
-```Lua
-Dummy = require("com.example.Dummy")
+import java.lang.String;
 
-AccessExample = mixin.quack("accessible_targetclass")
-dummy = Dummy("asd")
-accessibleDummy = java.cast(dummy, AccessExample)
-foobar = accessibleDummy:getFoobar()
+public class Dummy {
+    private final String foobar;
+
+    public Dummy(String foobar) {
+        this.foobar = foobar + (int)(Math.random()*100);
+    }
+
+    public void bat(boolean baz) {
+        // ...
+    }
+}
+```
+
+and the following mixin to access the private field `foobar`:
+```Lua [accessExampleMixin.lua]
+local builder = mixin.to("com.example.Dummy")
+builder:getAccessor({ value = "foobar" })
+builder:build("accessible_foobar")
+```
+
+we use `mixin.quack()` to access the duck interface:
+```Lua [main.lua]
+local Dummy = require("com.example.Dummy")
+
+local AccessExample = mixin.quack("accessibleFoobar")
+local dummy = Dummy("asd")
+local accessibleDummy = java.cast(dummy, AccessExample)
+local foobar = accessibleDummy:getFoobar()
 ```
 
 ## Annotations
+
+The following functions are provided on the `annotation` index of the `mixin` global.
+
+
+
+Most of these functions represent injector annotations. Only one injector annotation can be provided per-method. The exceptions to this are `expression()` and `definition()`, which *can* be provided more than once per method.
+
+### Annotation Tables
+
+All of these functions expect a table as the first parameter. This table gets recursively parsed and applied to the annotation interface that the function represents. The method names become keys, and the return values become the value. Arrays are a standard table with number indices. 
+
+There is a special exception to the method name `value`, where if it's the only key-value pair being provided, the key name can be omitted. A common example of this is the mixin `@At` annotation. Both:
+```Lua
+{ value = "HEAD" }
+```
+and:
+```Lua
+{ "HEAD" }
+```
+are valid ways to define an `@At` annotation.
+
+---
+
+### `mixin.annotation.inject(annotation)`
+
+Creates an `@Inject` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Inject` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.modifyArg(annotation, targetType)`
+
+Creates a `@ModifyArg` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyArg` annotation.
+2. `targetType` - `string`: A type descriptor string of the argument being modified.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.modifyArgs(annotation)`
+
+Creates a `@ModifyArgs` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyArgs` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.modifyExpressionValue(annotation, targetType)`
+
+Creates a `@ModifyExpressionValue` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyExpressionValue` annotation.
+2. `targetType` - `string`: A type descriptor string of the argument being modified.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.modifyReturnValue(annotation)`
+
+Creates a `@ModifyReturnValue` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@ModifyReturnValue` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.wrapMethod(annotation)`
+
+Creates a `@WrapMethod` annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@WrapMethod` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.custom(annotation, annotationType, methodDescriptor, parameterTypes, returnType)`
+
+Creates a custom injector annotation.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the given `annotationType`.
+2. `annotationType` - `userdata [class]`: The annotation class to be used.
+3. `methodDescriptor` - `string`: The target method's descriptor string.
+4. `parameterTypes` - `table<string>`: The parameters of the injector method. These may differ from the target method's descriptor.
+5. `returnType` - `string`: The return type of the injector method. This may differ from the target method's dscriptor.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.expression(annotation)`
+
+Creates an `@Expression` annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Expression` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
+
+### `mixin.annotation.definition(annotation)`
+
+Creates a `@Definition` annotation. This method does not produce an injector annotation and may be used multiple times within an inject method.
+
+#### Parameters
+
+1. `annotation` - `table`: An [annotation table](#annotation-tables) that matches the `@Definition` annotation.
+
+#### Returns
+
+- `userdata [instance]`: A reference to the annotation for use in mixin method building.
+
+---
 
 ## Sugars
 

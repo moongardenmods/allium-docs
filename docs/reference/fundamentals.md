@@ -4,23 +4,17 @@ outline: deep
 
 # Fundamentals
 
-## Direct Conventions
-
 The following is a list of Java conventions, and how they map to Lua. 
 
-::: info
-In these examples `local` has been omitted from the Lua side for readability. This reference is not intended to be an example of good Lua hygiene.
-:::
+## Imports
 
-### Imports
-
-#### Basic Case
+### Basic Case
 ::: code-group
 ```Java
 import net.minecraft.world.level.block.state.BlockState;
 ```
 ```Lua
-BlockState = require("net.minecraft.world.level.block.state.BlockState")
+local BlockState = require("net.minecraft.world.level.block.state.BlockState")
 ```
 :::
 ::: tip
@@ -29,7 +23,7 @@ You are not beholden to Java's whims. The variable that the imported class is st
 However, it's good practice to keep naming consistent between Lua and Java to avoid confusion. All Lua code on this wiki follows this standard.
 :::
 
-#### Nested Class
+### Nested Class
 
 In Lua, the last `.` between the outer and inner class becomes a `$`.
 
@@ -38,13 +32,13 @@ In Lua, the last `.` between the outer and inner class becomes a `$`.
 import net.minecraft.world.level.block.state.BlockBehaviour.OffsetType;
 ```
 ```Lua
-OffsetType = require(
+local OffsetType = require(
     "net.minecraft.world.level.block.state.BlockBehaviour$OffsetType"
 )
 ```
 :::
 
-### Object Construction
+## Object Construction
 
 ::: code-group
 ```Java
@@ -53,13 +47,13 @@ import com.example.ExampleObject;
 ExampleObject example = new ExampleObject(1, 2, 3);
 ```
 ```Lua
-ExampleObject = require("com.example.ExampleObject")
+local ExampleObject = require("com.example.ExampleObject")
 
-example = ExampleObject(1, 2, 3)
+local example = ExampleObject(1, 2, 3)
 ```
 :::
 
-### Static Methods & Fields
+## Static Methods & Fields
 
 ::: code-group
 ```Java
@@ -69,14 +63,14 @@ int value = ExampleObject.FIELD;
 ExampleObject.testMethod("hello!");
 ```
 ```Lua
-ExampleObject = require("com.example.ExampleObject")
+local ExampleObject = require("com.example.ExampleObject")
 
-value = ExampleObject.FIELD
+local value = ExampleObject.FIELD
 ExampleObject.testMethod("hello!")
 ```
 :::
 
-### Instance Methods & Fields
+## Instance Methods & Fields
 
 In Lua, the `.` changes to a `:` for instance method invocation.
 
@@ -89,15 +83,15 @@ double value = example.field;
 example.updateField(value+1);
 ```
 ```Lua
-ExampleObject = require("com.example.ExampleObject")
+local ExampleObject = require("com.example.ExampleObject")
 
-example = ExampleObject(1, 2, 3)
-value = example.field
-example:updateField(value+1) 
+local example = ExampleObject(1, 2, 3)
+local value = example.field
+local example:updateField(value+1) 
 ```
 :::
 
-### Casting
+## Casting
 
 See [Java Utilities - `java.cast()`](/reference/java-utils#java-cast-object-class)
 
@@ -110,15 +104,15 @@ ExampleObject example = new ExampleObject(1, 2, 3);
 CastedObject castedObject = (CastedObject) example;
 ```
 ```Lua
-ExampleObject = require("com.example.ExampleObject")
-CastedObject = require("com.example.CastedObject")
+local ExampleObject = require("com.example.ExampleObject")
+local CastedObject = require("com.example.CastedObject")
 
-example = ExampleObject(1, 2, 3)
-castedObject = java.cast(example, CastedObject)
+local example = ExampleObject(1, 2, 3)
+local castedObject = java.cast(example, CastedObject)
 ```
 :::
 
-### Type Conversions
+## Type Conversions
 
 Given a class like:
 ```java [FooBar.java]
@@ -186,16 +180,16 @@ boolean longString = foobar.isLongString("Hello World!");
 boolean notLongString = foobar.invert(longString);
 ```
 ```Lua
-FooBar = require("com.example.FooBar")
+local FooBar = require("com.example.FooBar")
 
-foobar = FooBar(10, 7000000000)
+local foobar = FooBar(10, 7000000000)
 foobar:addPrecise(0.1, 0.0001)
-fineList = foobar:getFineList()
-veryFineList = foobar:getVeryFineList()
-old = foobar:changeInteger(fineList:size())
-bigold = foobar:changeBigInteger(fineList:size()+veryFineList:size())
-longString = foobar:isLongString("Hello World!")
-notLongString = foobar:invert(longString)
+local fineList = foobar:getFineList()
+local veryFineList = foobar:getVeryFineList()
+local old = foobar:changeInteger(fineList:size())
+local bigold = foobar:changeBigInteger(fineList:size()+veryFineList:size())
+local longString = foobar:isLongString("Hello World!")
+local notLongString = foobar:invert(longString)
 ```
 :::
 
@@ -210,7 +204,7 @@ Types are converted as follows:
 |  `table`   |                                         `List`, `Set`, `Map`                                         | When going from Java to Lua, converted only if the java method's return value is annotated with `@CoerceToNative`. When going from Lua to Java, converted unconditionally.               |
 | `userdata` |                                         *, `Class`, `EClass`                                         | Java classes and objects are userdata and can be used where needed. Additionally, where a `Class` or `EClass` are expected, a userdata passed directly from `require` can be used.       |
 
-### Throwing exceptions
+## Throwing exceptions
 
 See [Java Utilities - `java.throw()`](/reference/java-utils#java-throw-exception)
 
@@ -221,13 +215,13 @@ import java.lang.IllegalStateException;
 throw new IllegalStateException("Oh no!");
 ```
 ```Lua
-IllegalStateException = require("java.lang.IllegalStateException")
+local IllegalStateException = require("java.lang.IllegalStateException")
 
 java.throw(IllegalStateException("Oh no!"))
 ```
 :::
 
-### Functional Interfaces
+## Functional Interfaces
 
 ::: code-group
 ```Java
@@ -242,11 +236,11 @@ numbers.forEach((otherObj) -> {
 });
 ```
 ```Lua
-ExampleObject = require("com.example.ExampleObject")
+local ExampleObject = require("com.example.ExampleObject")
 
-example = ExampleObject(1, 2, 3)
-message = "Hello World!"
-numbers = example:getList()
+local example = ExampleObject(1, 2, 3)
+local message = "Hello World!"
+local numbers = example:getList()
 numbers:forEach(function(otherObj)
     otherObj:sendMessage(message)
     otherObj:flush()
@@ -257,7 +251,7 @@ end)
 If the type is in the package `java.util.function` you can be confident it's a functional interface of some kind.
 :::
 
-### Generic Types
+## Generic Types
 
 A generic class can be indexed with a table of classes before construction. This applies a lower boundary of possible types that the generic class can contain.
 
@@ -272,10 +266,10 @@ intList.addAll(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 9);
 // ...
 ```
 ```Lua
-ArrayList = require("java.util.ArrayList")
-Integer = require("java.lang.Integer")
+local ArrayList = require("java.util.ArrayList")
+local Integer = require("java.lang.Integer")
 
-intList = ArrayList[{Integer}]()
+local intList = ArrayList[{Integer}]()
 intList:addAll(3, 1, 4, 1, 5, 9, 2, 6, 5, 3, 5, 8, 9, 7, 9, 3, 9)
 ```
 :::
