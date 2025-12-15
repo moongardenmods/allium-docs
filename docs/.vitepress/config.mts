@@ -14,7 +14,7 @@ export default defineConfig({
     ],
     base: "/allium-docs/",
     themeConfig: {
-        logo: "/icon.png",
+        logo: "icon.png",
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'Home', link: '/' },
