@@ -2,16 +2,11 @@
 outline: [2, 3]
 ---
 
-# Mixins
+# Mixin Library
 
 The following functions are provided to scripts via the `mixin` global.
 
-::: danger 
-Mixins are a very complicated topic that's very hard to grasp without a decent understanding of the JVM. If you would like to learn more about them, check out:
-1. [Mixin's own wiki](https://github.com/SpongePowered/Mixin/wiki).
-2. The [Mixin Cheatsheet](https://github.com/dblsaiko/mixin-cheatsheet/blob/master/README.md).
-3. [MixinExtras' Wiki](https://github.com/LlamaLad7/MixinExtras/wiki).
-:::
+<!--@include: ./snippets/mixin-danger.md-->
 
 ::: warning
 This page is under construction
@@ -94,7 +89,7 @@ public class Dummy {
         this.foobar = foobar + (int)(Math.random()*100);
     }
 
-    public void bat(boolean baz) {
+    private void bat(boolean baz) {
         // ...
     }
 }
@@ -103,18 +98,20 @@ public class Dummy {
 and the following mixin to access the private field `foobar`:
 ```Lua [accessExampleMixin.lua]
 local builder = mixin.to("com.example.Dummy")
-builder:getAccessor({ value = "foobar" })
-builder:build("accessible_foobar")
+builder:getAccessor({ "foobar" })
+builder:invoker({ "bat(Z)V" })
+builder:build("foobar_interface")
 ```
 
 we use `mixin.quack()` to access the duck interface:
 ```Lua [main.lua]
 local Dummy = require("com.example.Dummy")
 
-local AccessExample = mixin.quack("accessibleFoobar")
+local AccessExample = mixin.quack("foobar_interface")
 local dummy = Dummy("asd")
 local accessibleDummy = java.cast(dummy, AccessExample)
 local foobar = accessibleDummy:getFoobar()
+accessibleDummy:invokeBat(false)
 ```
 
 ### Annotation Tables
@@ -136,10 +133,6 @@ are valid ways to define an `@At` annotation.
 The following functions are provided on the `annotation` index of the `mixin` global.
 
 Most of these functions represent injector annotations. Only one injector annotation can be provided per-method. The exceptions to this are `expression()` and `definition()`, which *can* be provided more than once per method.
-
-::: tip
-Clicking on the annotation names will take you to their javadoc.
-:::
 
 ---
 

@@ -1,4 +1,4 @@
-# Java Utilities
+# Java Library
 
 The following functions are provided to scripts via the `java` global.
 

@@ -93,7 +93,7 @@ local example:updateField(value+1) -- [!code highlight]
 
 ## Casting
 
-See [Java Utilities - `java.cast()`](/reference/java-utils#java-cast-object-class)
+See [Java Library - `java.cast()`](/reference/java-lib#java-cast-object-class)
 
 ::: code-group
 ```Java
@@ -206,7 +206,7 @@ Types are converted as follows:
 
 ## Throwing exceptions
 
-See [Java Utilities - `java.throw()`](/reference/java-utils#java-throw-exception)
+See [Java Library - `java.throw()`](/reference/java-lib#java-throw-exception)
 
 ::: code-group
 ```Java
