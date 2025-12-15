@@ -35,47 +35,12 @@ Coerces `tableLike` to a table.
 ### Usage
 
 Given the Java class:
-```Java [CoerceExample.java]
-package com.example;
 
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
-import java.lang.Integer;
-import java.lang.String;
+<<< @/reference/snippets/code/CoerceExample.java
 
-public class CoerceExample {
-    
-    public static List<Integer> getList() {
-        return List.of(3, 1, 4, 1, 5, 9);
-    }
+The usage for each type would be:
 
-    public static Set<Integer> getSet() {
-        return Set.of(3, 1, 4, 5, 9);
-    }
-
-    public static Map<String, Integer> getMap() {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("hello", 5);
-        map.put("world!", 6);
-        return map;
-    }
-}
-```
-
-```Lua [coerceExample.lua]
-local List = require("java.util.List")
-local Set = require("java.util.Set")
-local Map = require("java.util.Map")
-local Integer = require("java.lang.Integer")
-local String = require("java.lang.String")
-local CoerceExample = require("com.example.CoerceExample")
-
-local list = java.coerce(CoerceExample.getList(), List[{Integer}]) -- [!code highlight]
-local set = java.coerce(CoerceExample.getSet(), Set[{Integer}]) -- [!code highlight]
-local map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}]) -- [!code highlight]
-```
+<<< @/reference/snippets/code/coerceExample.lua{8-10 Lua}
 
 ## `java.wrap(value, class)`
 

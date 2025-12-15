@@ -13,33 +13,14 @@ The standard class builder is one of the most in-development aspects of Allium. 
 :::
 
 Given the following class:
-```Java [Animal.java]
-package com.example;
 
-public class Animal {
-
-    protected int speed;
-
-    public Animal(int speed) {
-        this.speed = speed;
-    }
-
-    protected boolean makesNoise() {
-        return true;
-    }
-
-    public String noise(boolean chasing, int packSize) {
-        return makesNoise() ? "*rustle, rustle*" : "*silence*";
-    }
-}
-```
+<<< @/reference/snippets/code/Animal.java
 
 The following "usage" section of each method will build out a `Dog` class in Lua, starting with:
-```Lua [Dog.lua] 
-local Animal = require("com.example.Animal")
 
-local dogClassBuilder = java.extendClass(Animal)
-```
+<<< @/reference/snippets/code/Dog.lua#init{Lua}
+
+---
 
 ### `classBuilder:overrideMethod(methodName, parameters, access, func)`
 
@@ -54,23 +35,9 @@ Override an existing method of the parent class.
 
 #### Usage
 
-```Lua:line-numbers=4 [Dog.lua]
-dogClassBuilder:overrideMethod("noise", {java.boolean, java.int}, {}, function(this, chasing, packSize)  -- [!code highlight]
-    if this:makesNoise() then
-        -- We create isRunning() later, but can use it here!
-        if this:isRunning() or chasing then 
-            return "*pant*, *pant*"
-        else
-            if packSize > 2 then
-                return "*awoo!*"
-            else
-                return "*woof!* *woof!*"
-            end
-        end
-    end
-    return this.super:noise()
-end)  -- [!code highlight]
-```
+<<< @/reference/snippets/code/Dog.lua#override{1,15 Lua:line-numbers=4}
+
+---
 
 ### `classBuilder:createMethod(methodName, parameters, returnClass, access, func)`
 
@@ -86,11 +53,9 @@ Create an entirely new method on the class.
 
 #### Usage
 
-```Lua:line-numbers=14 [Dog.lua]
-dogClassBuilder:createMethod("isRunning", {}, java.boolean, {}, function(this)  -- [!code highlight]
-    return this.speed >= 5
-end)  -- [!code highlight]
-```
+<<< @/reference/snippets/code/Dog.lua#create{1,3 Lua:line-numbers=14}
+
+---
 
 ### `classBuilder:build()`
 
@@ -102,11 +67,7 @@ Builds the class.
 
 #### Usage
 
-```Lua:line-numbers=17 [Dog.lua]
-local Dog = dogClassBuilder:build() -- [!code highlight]
-local inu = Dog(0)
-print(inu:noise()) -- prints "*woof!* *woof!*"
-```
+<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=17}
 
 ## Mixin Class Builder
 
@@ -115,58 +76,16 @@ Obtained from [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interface
 <!--@include: ./snippets/mixin-danger.md-->
 
 Given the following class:
-```Java [Car.class]
-package com.example;
 
-public class Car {
-    private int speed;
-    private int gas;
-    private final int wheels;
-
-    public Car(int speed) {
-        this.speed = speed+5;
-        this.wheels = 4;
-        this.gas = 100;
-    }
-
-    private boolean isSpeeding() {
-        return gas > 0 && speed > 10;
-    }
-
-    public int getRemainingGas() {
-        return this.gas;
-    }
-
-    public String drive() {
-        if (gas == 0) {
-            return "*sputter*";
-        } else if (wheels < 4) {
-            gas--;
-            return "putt putt putt";
-        } else if (isSpeeding()) {
-            gas-=5;
-            return "VROOM!!!";
-        } else {
-            gas--;
-            return "vroom!";
-        }
-    }
-}
-```
+<<< @/reference/snippets/code/Car.java
 
 The following "usage" section of each method will modify this class in Lua, starting with:
-```Lua [CarMixin.lua] 
-local mixinBuilder = mixin.to("com.example.Car")
-local mixinInterfaceBuilder = mixin.to("com.example.Car", nil, nil, true)
-```
-The sections will also use an arbitrary "entrypoint" script representing either the `static` or `dynamic` entrypoint:
-```Lua [entrypoint.lua]
-local Car = require("com.example.Car")
 
--- Same ID as used in mixinInterfaceBuilder:build()
-local AccessibleCar = mixin.quack("accessible_car")
-local sedan = java.cast(Car(0))
-```
+<<< @/reference/snippets/code/CarMixin.lua#init{Lua}
+
+The sections will also use an arbitrary "entrypoint" script representing either the `static` or `dynamic` entrypoint:
+
+<<< @/reference/snippets/code/entrypoint.lua#init{Lua}
 
 
 
@@ -183,21 +102,12 @@ Create an inject method. Can **not** be used on mixin builders where `duck` is `
 #### Usage
 
 Modify the constructor to negate the added 5 speed:
-```Lua:line-numbers=3 [CarMixin.lua]
-mixinBuilder:createInjectMethod("negate_init_speed", { -- [!code highlight]
-    mixin.annotation.inject({ 
-        method = { "<init>(I)V" },
-        at = { "TAIL" }
-    })
-}) -- [!code highlight]
-```
+
+<<< @/reference/snippets/code/CarMixin.lua#create{1,6 Lua:line-numbers=3}
+
 Then in either the `static` or `dynamic` script entrypoint:
-```Lua:line-numbers=6 [entrypoint.lua]
-mixin.get("negate_init_speed"):hook(function(this, speed)
-    -- override the speed that was previously set.
-    this.speed = speed
-end)
-```
+
+<<< @/reference/snippets/code/entrypoint.lua#create{Lua:line-numbers=6}
 
 ::: tip
 To inject into constructors, and static blocks, use `<init>()V` and `<clinit>()V` as target method names, respectively. Don't forget to fill in parameters!
@@ -218,14 +128,12 @@ For more information see [Mixin Cheatsheet - `@Accessor`](https://github.com/dbl
 #### Usage
 
 Add a setter and getter accessor for the speed:
-```Lua:line-numbers=9 [CarMixin.lua]
-mixinInterfaceBuilder:accessor({ "speed" })
-```
+
+<<< @/reference/snippets/code/CarMixin.lua#accessor{Lua:line-numbers=9}
+
 Mess with it later on in the `static` or `dynamic` entrypoints:
-```Lua:line-numbers=10 [entrypoint.lua]
-sedan:setSpeed(10)
-print(sedan:getSpeed())
-```
+
+<<< @/reference/snippets/code/entrypoint.lua#accessor{Lua:line-numbers=10}
 
 ### `mixinInterfaceBuilder:getAccessor(annotations)`
 
@@ -240,13 +148,12 @@ The method name is automatically generated from the target field name. It starts
 #### Usage
 
 Add a getter accessor for the number of wheels:
-```Lua:line-numbers=10 [CarMixin.lua]
-mixinInterfaceBuilder:getAccessor({ "wheels" })
-```
+
+<<< @/reference/snippets/code/CarMixin.lua#getaccessor{Lua:line-numbers=10}
+
 Mess with it later on in the `static` or `dynamic` entrypoints:
-```Lua:line-numbers=12 [entrypoint.lua]
-print("sedan has", sedan:getWheels(), "wheels")
-```
+
+<<< @/reference/snippets/code/entrypoint.lua#getaccessor{Lua:line-numbers=12}
 
 ### `mixinInterfaceBuilder:setAccessor(annotations)`
 
@@ -261,13 +168,12 @@ The method name is automatically generated from the target field name. It starts
 #### Usage
 
 Add a setter accessor for gas:
-```Lua:line-numbers=11 [CarMixin.lua]
-mixinInterfaceBuilder:setAccessor({ "gas" })
-```
+
+<<< @/reference/snippets/code/CarMixin.lua#setaccessor{Lua:line-numbers=11}
+
 Mess with it later on in the `static` or `dynamic` entrypoints:
-```Lua:line-numbers=13 [entrypoint.lua]
-sedan:setGas(150)
-```
+
+<<< @/reference/snippets/code/entrypoint.lua#setaccessor{Lua:line-numbers=13}
 
 ### `mixinInterfaceBuilder:invoker(annotations)`
 
@@ -282,13 +188,12 @@ The method name is automatically generated from the target method name. It start
 #### Usage
 
 Add an invoker for `isSpeeding()`:
-```Lua:line-numbers=12 [CarMixin.lua]
-mixinInterfaceBuilder:invoker({ "isSpeeding()Z" })
-```
+
+<<< @/reference/snippets/code/CarMixin.lua#invoker{Lua:line-numbers=12}
+
 Mess with it later on in the `static` or `dynamic` entrypoints:
-```Lua:line-numbers=14 [entrypoint.lua]
-print("sedan speeding:", sedan:invokeIsSpeeding())
-```
+
+<<< @/reference/snippets/code/entrypoint.lua#invoker{Lua:line-numbers=14}
 
 ### `mixinBuilder:build(mixinId)`
 
@@ -300,45 +205,4 @@ Builds the mixin.
 
 #### Usage
 
-```Lua:line-numbers=13 [CarMixin.lua]
-mixinBuilder:build()
-mixinInterfaceBuilder:build("accessible_car")
-```
-
-### Complete Files
-
-Putting all the snippets together, the two files combined are provided here.
-
-```Lua [CarMixin.lua] 
-local mixinBuilder = mixin.to("com.example.Car")
-local mixinInterfaceBuilder = mixin.to("com.example.Car", nil, nil, true)
-mixinBuilder:createInjectMethod("negate_init_speed", {
-    mixin.annotation.inject({ 
-        method = { "<init>(I)V" },
-        at = { "TAIL" }
-    })
-})
-mixinInterfaceBuilder:accessor({ "speed" })
-mixinInterfaceBuilder:getAccessor({ "wheels" })
-mixinInterfaceBuilder:setAccessor({ "gas" })
-mixinInterfaceBuilder:invoker({ "isSpeeding()Z" })
-mixinBuilder:build()
-mixinInterfaceBuilder:build("accessible_car")
-```
-
-```Lua [entrypoint.lua]
-local Car = require("com.example.Car")
-
--- Same ID as used in mixinInterfaceBuilder:build()
-local AccessibleCar = mixin.quack("accessible_car")
-local sedan = java.cast(Car(0))
-mixin.get("negate_init_speed"):hook(function(this, speed)
-    -- override the speed that was previously set.
-    this.speed = speed
-end)
-sedan:setSpeed(10)
-print(sedan:getSpeed())
-print("sedan has", sedan:getWheels(), "wheels")
-sedan:setGas(150)
-print("sedan speeding:", sedan:invokeIsSpeeding())
-```
+<<< @/reference/snippets/code/CarMixin.lua#build{Lua:line-numbers=13}

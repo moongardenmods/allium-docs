@@ -15,7 +15,7 @@
   "packageManager": "pnpm@10.23.0",
   "dependencies": {
     "@iconify-json/material-icon-theme": "^1.2.44",
-    "vitepress": "^1.6.4",
+    "vitepress": "^2.0.0-alpha",
     "vitepress-plugin-group-icons": "^1.6.5"
   }
 }

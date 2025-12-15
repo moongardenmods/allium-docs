@@ -1,0 +1,10 @@
+local List = require("java.util.List")
+local Set = require("java.util.Set")
+local Map = require("java.util.Map")
+local Integer = require("java.lang.Integer")
+local String = require("java.lang.String")
+local CoerceExample = require("com.example.CoerceExample")
+
+local list = java.coerce(CoerceExample.getList(), List[{Integer}])
+local set = java.coerce(CoerceExample.getSet(), Set[{Integer}])
+local map = java.coerce(CoerceExample.getMap(), Map[{String, Integer}])
