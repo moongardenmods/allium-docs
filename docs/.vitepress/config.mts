@@ -9,12 +9,12 @@ export default defineConfig({
     head: [
         [
             'link',
-            { rel: 'icon', type: 'image/png', href: '/icon.png' }
+            { rel: 'icon', type: 'image/png', href: 'icon.png' }
         ],
     ],
     base: "/allium-docs/",
     themeConfig: {
-        logo: "icon.png",
+        logo: "/icon.png",
         // https://vitepress.dev/reference/default-theme-config
         nav: [
             { text: 'Home', link: '/' },
