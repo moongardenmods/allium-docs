@@ -53,7 +53,14 @@ export default defineConfig({
             { icon: 'modrinth', link: 'https://modrinth.com/mod/allium' },
             { icon: 'github', link: 'https://github.com/moongardenmods/allium' },
             { icon: 'discord', link: "https://discord.gg/rWSaP222G9" },
-        ]
+        ],
+
+        search: {
+            provider: 'local',
+            options: {
+                detailedView: true
+            }
+        }
     },
 
     markdown: {
