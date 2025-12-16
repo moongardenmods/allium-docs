@@ -40,6 +40,7 @@ export default defineConfig({
                 items: [
                     { text: 'Fundamentals', link: '/reference/fundamentals' },
                     { text: 'Scripts', link: '/reference/scripts' },
+                    { text: 'Allium Library', link: '/reference/allium-lib' },
                     { text: 'Package Library', link: '/reference/package-lib' },
                     { text: 'Java Library', link: '/reference/java-lib' },
                     { text: 'Mixin Library', link: '/reference/mixin-lib' },
