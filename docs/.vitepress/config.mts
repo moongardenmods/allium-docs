@@ -9,7 +9,7 @@ export default defineConfig({
     head: [
         [
             'link',
-            { rel: 'icon', type: 'image/png', href: 'icon.png' }
+            { rel: 'icon', type: 'image/png', href: '/allium-docs/icon.png' }
         ],
     ],
     base: "/allium-docs/",
