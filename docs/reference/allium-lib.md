@@ -4,7 +4,7 @@ The following functions are provided to scripts via the `allium` global.
 
 ## `allium.environment()`
 
-Get the current environment the game is running in. If `"client"`, then client specific rendering classes are available for use. If `"server"`, then dedicated server specific classes are available for use.
+Get the current environment the game is running in. If `"client"`, then client specific rendering classes are available for use. If `"server"`, then the client logic is unavailable, but anything else is available.
 
 ### Returns
 
@@ -67,7 +67,7 @@ end
 
 ### Usage
 
-```Lua
+```Lua {1}
 local bouquet = allium.getScript("bouquet")
 if not bouquet then
     print("Bouquet not found!")
