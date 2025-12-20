@@ -94,6 +94,48 @@ print("Allium", result, "a VegetationBlock.")
 In Minecraft's code, `Blocks.ALLIUM` is of type `FlowerBlock`, which inherits from `VegetationBlock`. Therefore in this example, `java.instanceOf` should return `true`.
 :::
 
+## `java.callWith(function, paramTypes, params...)`
+
+Invokes a java instance method with the given `paramTypes`, using the given lua `params...`. Useful for when generic types abstract away the type, confusing Allium's automatic method resolution.
+
+::: tip
+If you get an error that Allium can't find a method that is present, and one of the parameters types is `T` (or some other letter, generally); use this function.
+:::
+
+### Parameters
+
+1. `function` - `function`: The method to be called.
+2. `paramTypes` - `table<userdata [class]>`: The list of classes representing each parameter.
+3. `params...` - `any`: A variable amount of parameters to be passed to the method. If this method is an instance method, supply the instance that the method should be called on. Supplying the type of the instance in `paramTypes` is not necessary.
+
+### Returns
+
+- `any...`: Technically a variable number of arguments, but is generally just the single return value of the `function` being called.
+
+### Usage
+
+Parses a table, converting it into a text component. Example derived from [Bouquet API - component.lua](https://github.com/moongardenmods/allium/blob/main/bouquet/src/main/resources/bouquet/api/component.lua).
+
+```Lua
+local ComponentSerialization = require("net.minecraft.network.chat.ComponentSerialization")
+local LuaOps = require("dev.hugeblank.bouquet.util.LuaOps")
+local LuaValue = require("org.squiddev.cobalt.LuaValue")
+
+local data = {
+    text = "Hello world!",
+    color = "green",
+    hover_event = { action = "show_text", value = "Secret message!" }
+}
+
+local dataResult = java.callWith(ComponentSerialization.CODEC.parse, {LuaOps, LuaValue}, ComponentSerialization.CODEC, LuaOps(script:getState()), data) -- [!code highlight]
+if result:isError() and dataResult:error():isPresent() then
+    error(dataResult:error():get():message())
+elseif dataResult:isError() then
+    error("An unknown error occurred during parsing.")
+end
+local component = dataResult:getOrThrow()
+```
+
 ## `java.getRawClass(className)`
 
 Gets a raw class or interface representation as an `EClass` (enhanced representation of the standard `Class` type). Seldom useful due to Allium's automatic conversion of `userdata [class]` to `EClass` and `Class` types where necessary.
