@@ -4,7 +4,9 @@ local Animal = require("com.example.Animal")
 local dogClassBuilder = java.extendClass(Animal)
 -- #endregion init
 -- #region override
-dogClassBuilder:overrideMethod("noise", {java.boolean, java.int}, {}, function(this, chasing, packSize)
+dogClassBuilder:override("noise", {java.boolean, java.int}, {})
+
+function dogClassBuilder:noise(this, chasing, packSize)
     if this:makesNoise() then
         -- We create isRunning() later, but can use it here!
         if this:isRunning() or chasing then 
@@ -18,12 +20,14 @@ dogClassBuilder:overrideMethod("noise", {java.boolean, java.int}, {}, function(t
         end
     end
     return this.super:noise()
-end)
+end
 -- #endregion override
 -- #region create
-dogClassBuilder:createMethod("isRunning", {}, java.boolean, {}, function(this)
+dogClassBuilder:method("isRunning", {}, java.boolean, {})
+
+function dogClassBuilder:isRunning(this)
     return this.speed >= 5
-end)
+end
 -- #endregion create
 -- #region build
 local Dog = dogClassBuilder:build()

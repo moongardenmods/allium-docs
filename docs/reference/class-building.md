@@ -22,7 +22,7 @@ The following "usage" section of each method will build out a `Dog` class in Lua
 
 ---
 
-### `classBuilder:overrideMethod(methodName, parameters, access, func)`
+### `classBuilder:override(methodName, parameters, access)`
 
 Override an existing method of the parent class.
 
@@ -31,15 +31,18 @@ Override an existing method of the parent class.
 1. `methodName` - `string`: The name of the method to override.
 2. `parameters` - `table<userdata [class]>`: The parameters of the method to override.
 3. `access` - `{ static = boolean? }`: Access flags for the overriding method. Set `static` if the method to override is static.
-4. `func` - `function`: The function to call for handling when the method is invoked. If the overriding method is not static then the first parameter is `this`, followed by the rest of the parameters specified in `parameters`.
+4. `func` - `function`: The function to call for handling when the method is invoked. 
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#override{1,15 Lua:line-numbers=4}
+In addition to overriding the method we must supply a function to the builder on the index matching `methodName`.
+If the overriding method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
+
+<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=4}
 
 ---
 
-### `classBuilder:createMethod(methodName, parameters, returnClass, access, func)`
+### `classBuilder:method(methodName, parameters, returnClass, access)`
 
 Create an entirely new method on the class.
 
@@ -53,7 +56,10 @@ Create an entirely new method on the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#create{1,3 Lua:line-numbers=14}
+If the method to be created is abstract, a function does not have to be submitted.
+If the method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
+
+<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=21}
 
 ---
 
@@ -67,7 +73,7 @@ Builds the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=17}
+<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=26}
 
 ## Mixin Class Builder
 

@@ -96,7 +96,7 @@ In Minecraft's code, `Blocks.ALLIUM` is of type `FlowerBlock`, which inherits fr
 
 ## `java.callWith(function, paramTypes, params...)`
 
-Invokes a java instance method with the given `paramTypes`, using the given lua `params...`. Useful for when generic types abstract away the type, confusing Allium's automatic method resolution.
+Invokes a java method (either static or instance) with the given `paramTypes`, using the given lua `params...`. Useful for when generic types abstract away the type, confusing Allium's automatic method resolution.
 
 ::: tip
 If you get an error that Allium can't find a method that is present, and one of the parameters types is `T` (or some other letter, generally); use this function.
@@ -133,7 +133,7 @@ if result:isError() and dataResult:error():isPresent() then
 elseif dataResult:isError() then
     error("An unknown error occurred during parsing.")
 end
-local component = dataResult:getOrThrow()
+local component = dataResult:getOrThrow() -- This would be sent in a command response, or something similar.
 ```
 
 ## `java.getRawClass(className)`
