@@ -178,7 +178,7 @@ Provides a class builder extending from the given `superclass`. Optionally appli
 
 1. `superclass` - `userdata [class]`: The parent class of the class being built.
 2. `interfaces` - `table<userdata [class]>?`: An optional table of interfaces to be applied to the class.
-3. `access` - `{ static = boolean?, interface = boolean?, abstract = boolean? }?`: An optional table of flags to define properties of the class.
+3. `access` - `table`: Optional access flags for the class being built. See [Access Modifier Table](#access-modifier-table).
 
 ### Returns
 

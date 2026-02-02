@@ -22,6 +22,44 @@ The following "usage" section of each method will build out a `Dog` class in Lua
 
 ---
 
+### `classBuilder:field(name, type, access, definition)`
+
+Creates or overrides a constructor.
+
+#### Parameters
+
+1. `name` - `string`: The name of the field to create.
+2. `type` - `userdata [class]`: The class type of the field.
+3. `access` - `table?`: Access flags for the field. See [Access Modifier Table](#access-modifier-table)
+4. `definition` - `any?`: Optional value or function for defining the field.
+
+#### Usage
+
+If the field is not final, the definition is optional. 
+
+<<< @/reference/snippets/code/Dog.lua#field{1 Lua:line-numbers=4}
+
+---
+
+### `classBuilder:constructor(parameters, access, definesFields)`
+
+Creates a field.
+
+#### Parameters
+
+1. `parameters` - `table<userdata [class]>`: The parameters of the constructor.
+2. `access` - `table?`: Access flags for the constructor. See [Access Modifier Table](#access-modifier-table)
+3. `definedFields` - `boolean?`: Whether or not to define instance fields on this constructor.
+
+
+#### Usage
+
+If the constructor has a parameter match with a constructor in the parent class, the function to define it is optional. If `definedFields` is set, instance fields created by `classBuilder:field()` are initialized in it. If the access table is nil, the constructor defaults to public access.
+
+<<< @/reference/snippets/code/Dog.lua#constructor{1 Lua:line-numbers=10}
+
+---
+
 ### `classBuilder:override(methodName, parameters, access)`
 
 Override an existing method of the parent class.
@@ -30,15 +68,14 @@ Override an existing method of the parent class.
 
 1. `methodName` - `string`: The name of the method to override.
 2. `parameters` - `table<userdata [class]>`: The parameters of the method to override.
-3. `access` - `{ static = boolean? }`: Access flags for the overriding method. Set `static` if the method to override is static.
-4. `func` - `function`: The function to call for handling when the method is invoked. 
+3. `access` - `table`: Access flags for the overriding method. See [Access Modifier Table](#access-modifier-table)
 
 #### Usage
 
 In addition to overriding the method we must supply a function to the builder on the index matching `methodName`.
 If the overriding method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
 
-<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=4}
+<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=15}
 
 ---
 
@@ -51,15 +88,14 @@ Create an entirely new method on the class.
 1. `methodName` - `string`: The method name. Must not exist in any parent classes.
 2. `parameters` - `table<userdata [class]>`: A table representing the parameter types in order.
 3. `returnClass` - `userdata [class]`: The class to be returned by this method.
-4. `access` - `{ abstract = boolean?, static = boolean? }`: Access flags for overriding the method.
-5. `func` - `function`: The function to call for handling when the method is invoked. If the parameter `access.abstract` is `true`, this parameter is ignored.
+4. `access` - `table`: Access flags for the overriding method. See [Access Modifier Table](#access-modifier-table)
 
 #### Usage
 
 If the method to be created is abstract, a function does not have to be submitted.
 If the method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
 
-<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=21}
+<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=34}
 
 ---
 
@@ -73,7 +109,27 @@ Builds the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=26}
+<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=39}
+
+---
+
+### Access Modifier Table
+
+Access modifier tables are used in almost every class builder method. They are defined as:
+
+```Lua
+{
+    public = boolean?,
+    protected = boolean?,
+    private = boolean?,
+    static = boolean?,
+    final = boolean?,
+    abstract = boolean?,
+    interface = boolean?
+}
+```
+
+Depending on the method being called, these modifiers may or may not be used. 
 
 ## Mixin Class Builder
 
