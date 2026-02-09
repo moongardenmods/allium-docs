@@ -1,4 +1,5 @@
 import { defineConfig } from 'vitepress'
+import footnote from 'markdown-it-footnote'
 import { groupIconVitePlugin, groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 
 // https://vitepress.dev/reference/site-config
@@ -65,10 +66,10 @@ export default defineConfig({
     },
 
     markdown: {
-        config(md) {
+        config: (md) => {
             md.use(groupIconMdPlugin, {
                 titleBar: { includeSnippet: true },
-            })
+            }).use(footnote)
         },
         lineNumbers: true,
     },

@@ -247,7 +247,7 @@ Creates a custom injector annotation.
 2. `annotationType` - `userdata [class]`: The annotation class to be used.
 3. `methodDescriptor` - `string`: The target method's descriptor string.
 4. `parameterTypes` - `table<string>`: The parameters of the injector method. These may differ from the target method's descriptor.
-5. `returnType` - `string`: The return type of the injector method. This may differ from the target method's dscriptor.
+5. `returnType` - `string`: The return type of the injector method. This may differ from the target method's descriptor.
 
 #### Returns
 

@@ -22,28 +22,64 @@ The following "usage" section of each method will build out a `Dog` class in Lua
 
 ---
 
-### `classBuilder:field(name, type, access, definition)`
+### `classBuilder:field(name, type, access, value)`
 
-Creates or overrides a constructor.
+Creates a field.
 
 #### Parameters
 
 1. `name` - `string`: The name of the field to create.
 2. `type` - `userdata [class]`: The class type of the field.
 3. `access` - `table?`: Access flags for the field. See [Access Modifier Table](#access-modifier-table)
-4. `definition` - `any?`: Optional value or function for defining the field.
+4. `value` - `number|string|boolean?`: Optional primitive value for defining the field.
 
 #### Usage
-
-If the field is not final, the definition is optional. 
 
 <<< @/reference/snippets/code/Dog.lua#field{1 Lua:line-numbers=4}
 
 ---
 
+### `classBuilder:usingSuper(parameters, remapper)`
+
+Creates a reference to a specific constructor on the super class.
+
+#### Parameters
+
+1. `parameters` - `table<userdata [class]>`: The parameters of the `super` constructor.
+2. `remapper` - `function?`: An optional function that accepts the parameters of the constructor that will eventually be built to invoke the `super` constructor. Returns what will be fed into said `super` constructor. If the parameters of the constructor and `super` constructor match, a remapper function is not needed.
+
+#### Returns
+
+- `userdata [instance]` - A reference to the selected `super` constructor.
+
+#### Usage
+
+<<< @/reference/snippets/code/Dog.lua#using{1 Lua:line-numbers=9}
+
+---
+
+### `classBuilder:usingThis(parameters, remapper)`
+
+Creates a reference to a specific constructor on the current class.
+
+#### Parameters
+
+1. `parameters` - `table<userdata [class]>`: The parameters of the `this` constructor.
+2. `remapper` - `function?`: An optional function that accepts the parameters of the constructor that will eventually be built to invoke the `this` constructor. Returns what will be fed into said `this` constructor. If the parameters of the constructor and `this` constructor match, a remapper function is not needed.
+
+#### Returns
+
+- `userdata [instance]` - A reference to the selected `this` constructor.
+
+#### Usage
+
+See [`classBuilder:usingSuper()`](#classbuilder-usingsuper-parameters-remapper)
+
+---
+
 ### `classBuilder:constructor(parameters, access, definesFields)`
 
-Creates a field.
+Creates or overrides a constructor.
 
 #### Parameters
 
@@ -56,11 +92,11 @@ Creates a field.
 
 If the constructor has a parameter match with a constructor in the parent class, the function to define it is optional. If `definedFields` is set, instance fields created by `classBuilder:field()` are initialized in it. If the access table is nil, the constructor defaults to public access.
 
-<<< @/reference/snippets/code/Dog.lua#constructor{1 Lua:line-numbers=10}
+<<< @/reference/snippets/code/Dog.lua#constructor{1 Lua:line-numbers=13}
 
 ---
 
-### `classBuilder:override(methodName, parameters, access)`
+### `classBuilder:override(methodName, parameters)`
 
 Override an existing method of the parent class.
 
@@ -68,14 +104,13 @@ Override an existing method of the parent class.
 
 1. `methodName` - `string`: The name of the method to override.
 2. `parameters` - `table<userdata [class]>`: The parameters of the method to override.
-3. `access` - `table`: Access flags for the overriding method. See [Access Modifier Table](#access-modifier-table)
 
 #### Usage
 
 In addition to overriding the method we must supply a function to the builder on the index matching `methodName`.
 If the overriding method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
 
-<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=15}
+<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=17}
 
 ---
 
@@ -95,7 +130,7 @@ Create an entirely new method on the class.
 If the method to be created is abstract, a function does not have to be submitted.
 If the method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
 
-<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=34}
+<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=36}
 
 ---
 
@@ -109,7 +144,7 @@ Builds the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=39}
+<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=41}
 
 ---
 
@@ -122,14 +157,12 @@ Access modifier tables are used in almost every class builder method. They are d
     public = boolean?,
     protected = boolean?,
     private = boolean?,
-    static = boolean?,
-    final = boolean?,
-    abstract = boolean?,
-    interface = boolean?
+    static = boolean?, -- only used for methods and fields
+    final = boolean?, -- only used for fields and classes
+    abstract = boolean?, -- only used for methods and classes
+    interface = boolean? -- only used for classes
 }
 ```
-
-Depending on the method being called, these modifiers may or may not be used. 
 
 ## Mixin Class Builder
 

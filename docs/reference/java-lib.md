@@ -146,7 +146,7 @@ Gets a raw class or interface representation as an `EClass` (enhanced representa
 
 ### Returns
 
-- `userdata [instance]`: an `EClass` instance representing the class matching `className`.
+- `userdata [instance]`: An `EClass` instance representing the class matching `className`.
 
 ### Usage
 
@@ -178,7 +178,7 @@ Provides a class builder extending from the given `superclass`. Optionally appli
 
 1. `superclass` - `userdata [class]`: The parent class of the class being built.
 2. `interfaces` - `table<userdata [class]>?`: An optional table of interfaces to be applied to the class.
-3. `access` - `table`: Optional access flags for the class being built. See [Access Modifier Table](#access-modifier-table).
+3. `access` - `table<string, boolean>?`: Optional access flags for the class being built. See [Access Modifier Table](#access-modifier-table).
 
 ### Returns
 

@@ -57,6 +57,8 @@ end
 
 ## `allium.getScript(id)`
 
+Get a script with the given ID.
+
 ### Parameters
 
 1. `id` - `string`: The script ID to get.

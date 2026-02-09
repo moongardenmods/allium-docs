@@ -4,29 +4,33 @@ local Animal = require("com.example.Animal")
 local dogClassBuilder = java.extendClass(Animal)
 -- #endregion init
 -- #region field
-local setField = {}
-dogClassBuilder:field("weight", java.int, { final = true }, function(this) 
-    local weight = setField[this]
-    setField[this] = nil
-    return weight
-end)
+dogClassBuilder:field("weight", java.int, { final = true })
+
+function dogClassBuilder:clinit(class)
+    -- set static fields here
+end
 -- #endregion field
+-- #region using
+local superUse = dogClassBuilder:usingSuper({java.int}, function(speed, weight)
+    -- super constructor uses the speed value, so we return that
+    return speed 
+end)
+-- #endregion using
 -- #region constructor
-dogClassBuilder:constructor({java.int, java.int}, nil, true)
-function dogClassBuilder:constructor(self, speed, weight)
-    self:super(speed)
-    setField[self] = weight
+dogClassBuilder:constructor(superUse, {java.int,  java.int}, nil, true)
+function dogClassBuilder:init(speed, weight)
+    self.weight = weight
 end
 -- #endregion constructor
 -- #region override
 dogClassBuilder:override("noise", {java.boolean, java.int}, {})
 
-function dogClassBuilder:noise(this, chasing, packSize)
-    if this:makesNoise() then
+function dogClassBuilder:noise(chasing, packSize)
+    if self:makesNoise() then
         -- We create isRunning() later, but can use it here!
-        if this.weight >= 20 then
+        if self.weight >= 20 then
             return "*huff*, *huff*"
-        elseif this:isRunning() or chasing then 
+        elseif self:isRunning() or chasing then 
             return "*pant*, *pant*"
         else
             if packSize > 2 then
@@ -42,8 +46,8 @@ end
 -- #region create
 dogClassBuilder:method("isRunning", {}, java.boolean, {})
 
-function dogClassBuilder:isRunning(this)
-    return this.speed >= 5
+function dogClassBuilder:isRunning()
+    return self.speed >= 5
 end
 -- #endregion create
 -- #region build
