@@ -4,8 +4,7 @@ outline: [2, 3]
 
 # Scripts
 
-Scripts are a collection of one or more Lua files and a manifest JSON file, stored in a directory, a zip archive, or within a java mod. 
-
+Scripts are a collection of one or more Lua files and a manifest JSON file, stored in a directory, a zip archive, or within a Java mod. 
 
 ## Manifest
 
@@ -19,27 +18,19 @@ The following values are required:
 
 ### Entrypoints
 
-Scripts are provided 3 entrypoints to launch from: mixin, static, and dynamic. Scripts **MUST** provide a static or dynamic entrypoint in order to be valid.
+Scripts are provided 2 entrypoints to launch from: `mixin`, and `main`. Scripts **MUST** provide a `main` entrypoint in order to be valid.
 
 #### `mixin`
 
-The mixin entrypoint is where mixin classes and interfaces are built and registered. This entrypoint is executed during the `preLaunch` phase, and should avoid doing anything other than mixin building.
+The `mixin` entrypoint is where mixin classes and interfaces are built and registered. This entrypoint is executed during the `preLaunch` phase, and should avoid doing anything other than mixin building.
 
 For more information see [Mixin Library](/reference/mixin-lib).
 
-#### `static`
+#### `main`
 
-The static entrypoint is where code that is unable to be reloaded should reside. For instance, anything that touches one of the games many registries found in the `BuiltinRegistries` class is unlikely to be able to be reloaded.
+The main entrypoint is where everything else should reside.
 
-The first value returned by this entrypoint becomes the script's module. This module is provided to other scripts that `require()` this script's ID.
-
-#### `dynamic`
-
-The dynamic entrypoint is where code that *can* be reloaded should reside. This includes [mixin method hooks](/reference/mixin-lib#method-hook), and event handlers.
-
-::: info
-Depending on where the mixin is, the reloadability might not be useful. For example if the mixin only executes once on launch then the reloaded hook will not be called.
-:::
+The first value returned by this entrypoint becomes the script's module. This module is provided to other scripts that provide this script's ID to `require()`.
 
 ### Example
 
@@ -50,8 +41,7 @@ Depending on where the mixin is, the reloadability might not be useful. For exam
   "name": "Example Script",
   "entrypoints": {
     "mixin": "mixin.lua",
-    "static": "main.lua",
-    "dynamic": "dynamic.lua"
+    "main": "main.lua",
   }
 }
 ```
@@ -70,11 +60,11 @@ Gets the ID provided by the script manifest.
 
 ### `script:getModule()`
 
-Gets the module provided by the `static` entrypoint.
+Gets the module provided by the `main` entrypoint.
 
 #### Returns
 
-- `string`: The script module.
+- `any?`: The script module.
 
 ### `script:getName()`
 
@@ -92,9 +82,27 @@ Gets the version provided by the script manifest.
 
 - `string`: The script version.
 
+### `script:regsiterReloadable(func)`
+
+Register a function that gets called when added, and when the script gets reloaded. This method is useful for registering script resources, hooking into events, or hooking into certain mixins. 
+
+::: info
+Not all code can or should be reloaded. For example, anything that touches Minecraft's registries (blocks, items, etc.) are unlikely to be reloadable and may even cause a crash.
+:::
+
+::: info
+The default behavior for events and mixins changes whether the hook or event (anything that has an optional `destroyOnReload` parameter,) is being registered inside or outside of the function given to this method. 
+Outside of this method, hooks/events do not get destroyed on reload. However, when placed inside the given function, they will be destroyed on reload. 
+Use the optional parameter provided if a more deterministic behavior is desired.
+:::
+
+#### Parameters
+
+1. `func` - `function`: A function to be invoked initially, and then for every reload.
+
 ### `script:registerResource(resource)`
 
-Register a temporary resource to this script that will close when the script unloads.
+Register a temporary resource to this script that will close when the script unloads (or reloads). Particularly useful in tandem with `script:registerReloadable()`.
 
 #### Parameters
 
@@ -102,4 +110,4 @@ Register a temporary resource to this script that will close when the script unl
 
 #### Returns
 
-- `userdata [instance]`: A wrapped instance of the `resource` that clears the dangling resource from within the script when `close()` is called.
+- `userdata [instance]`: A refernece to the `resource` that will clear the resource from within the script when `close()` is called.

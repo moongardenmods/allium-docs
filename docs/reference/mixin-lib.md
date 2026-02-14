@@ -43,7 +43,7 @@ See [Class Building - Mixin Class Builder](/reference/class-building#mixin-class
 
 ### `mixin.get(hookId)`
 
-Get a reference to a mixin injection with the given `hookId`. This function can (and should) be used in `static` and `dynamic` script entrypoints. 
+Get a reference to a mixin injection with the given `hookId`. This function can (and should) be used in the `main` script entrypoint. 
 
 #### Parameters
 
@@ -349,7 +349,7 @@ See [MixinExtras Wiki - Cancellable](https://github.com/LlamaLad7/MixinExtras/wi
 
 ## Method Hook
 
-Because of the restrictions of the `mixin` entrypoint, the Lua function that is to be put into the injector has to be hooked in from the `static` or `dynamic` entrypoints. The method hook is how this is done. It has a single function:
+Because of the restrictions of the `mixin` entrypoint, the Lua function that is to be put into the injector has to be hooked in from the `main` entrypoint. The method hook is how this is done. It has a single function:
 
 ### `methodHook:hook(func)`
 

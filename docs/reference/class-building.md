@@ -178,7 +178,7 @@ The following "usage" section of each method will modify this class in Lua, star
 
 <<< @/reference/snippets/code/CarMixin.lua#init{Lua}
 
-The sections will also use an arbitrary "entrypoint" script representing either the `static` or `dynamic` entrypoint:
+The sections will also use an arbitrary "entrypoint" script representing the `main` entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#init{Lua}
 
@@ -200,7 +200,7 @@ Modify the constructor to negate the added 5 speed:
 
 <<< @/reference/snippets/code/CarMixin.lua#create{1,6 Lua:line-numbers=3}
 
-Then in either the `static` or `dynamic` script entrypoint:
+Then in the `main` script entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#create{Lua:line-numbers=6}
 
@@ -226,7 +226,7 @@ Add a setter and getter accessor for the speed:
 
 <<< @/reference/snippets/code/CarMixin.lua#accessor{Lua:line-numbers=9}
 
-Mess with it later on in the `static` or `dynamic` entrypoints:
+Mess with it later on in the `main` entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#accessor{Lua:line-numbers=10}
 
@@ -246,7 +246,7 @@ Add a getter accessor for the number of wheels:
 
 <<< @/reference/snippets/code/CarMixin.lua#getaccessor{Lua:line-numbers=10}
 
-Mess with it later on in the `static` or `dynamic` entrypoints:
+Mess with it later on in the `main` entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#getaccessor{Lua:line-numbers=12}
 
@@ -266,7 +266,7 @@ Add a setter accessor for gas:
 
 <<< @/reference/snippets/code/CarMixin.lua#setaccessor{Lua:line-numbers=11}
 
-Mess with it later on in the `static` or `dynamic` entrypoints:
+Mess with it later on in the `main` entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#setaccessor{Lua:line-numbers=13}
 
@@ -286,7 +286,7 @@ Add an invoker for `isSpeeding()`:
 
 <<< @/reference/snippets/code/CarMixin.lua#invoker{Lua:line-numbers=12}
 
-Mess with it later on in the `static` or `dynamic` entrypoints:
+Mess with it later on in the `main` entrypoint:
 
 <<< @/reference/snippets/code/entrypoint.lua#invoker{Lua:line-numbers=14}
 

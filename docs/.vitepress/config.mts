@@ -46,7 +46,6 @@ export default defineConfig({
                     { text: 'Java Library', link: '/reference/java-lib' },
                     { text: 'Mixin Library', link: '/reference/mixin-lib' },
                     { text: 'Class Building', link: '/reference/class-building' },
-                    { text: 'Extensions', link: '/reference/extensions' },
                 ]
             }
         ],
