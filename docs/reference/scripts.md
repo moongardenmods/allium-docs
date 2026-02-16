@@ -82,23 +82,23 @@ Gets the version provided by the script manifest.
 
 - `string`: The script version.
 
-### `script:regsiterReloadable(func)`
+### `script:regsiterReloadable(location)`
 
-Register a function that gets called when added, and when the script gets reloaded. This method is useful for registering script resources, hooking into events, or hooking into certain mixins. 
+Register a path to a file relative to the script root that gets executed when added, and when the script gets reloaded. This method is useful for registering script resources, hooking into events, or hooking into certain mixins. 
 
 ::: info
 Not all code can or should be reloaded. For example, anything that touches Minecraft's registries (blocks, items, etc.) are unlikely to be reloadable and may even cause a crash.
 :::
 
 ::: info
-The default behavior for events and mixins changes whether the hook or event (anything that has an optional `destroyOnReload` parameter,) is being registered inside or outside of the function given to this method. 
-Outside of this method, hooks/events do not get destroyed on reload. However, when placed inside the given function, they will be destroyed on reload. 
+The default behavior for events and mixins changes whether the hook or event (anything that has an optional `destroyOnUnload` parameter,) is being registered inside or outside of the file given to this method. 
+Outside of the reloadable file, hooks/events do not get destroyed on reload. However, when used inside the given file, they will be destroyed on reload. 
 Use the optional parameter provided if a more deterministic behavior is desired.
 :::
 
 #### Parameters
 
-1. `func` - `function`: A function to be invoked initially, and then for every reload.
+1. `location` - `string`: A `require`-like path to the file to execute.
 
 ### `script:registerResource(resource)`
 

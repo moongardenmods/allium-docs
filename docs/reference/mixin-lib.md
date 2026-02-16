@@ -351,13 +351,14 @@ See [MixinExtras Wiki - Cancellable](https://github.com/LlamaLad7/MixinExtras/wi
 
 Because of the restrictions of the `mixin` entrypoint, the Lua function that is to be put into the injector has to be hooked in from the `main` entrypoint. The method hook is how this is done. It has a single function:
 
-### `methodHook:hook(func)`
+### `methodHook:hook(func, destroyOnUnload)`
 
 Hooks the given function into the given mixin injection.
 
 #### Parameters
 
 1. `func` - `function`: The function to be run when the injector gets invoked. Parameters passed into this function depend on the injector. If the injection does not target a static method, the first parameter passed to the function is `this`, followed by the remaining parameters specified by the injection annotation.
+2. `destroyOnUnload` - `boolean?`: Whether or not to remove this hook function from the hook on unload (or reload.)
 
 ::: tip
 It can be hard to visualize where a mixin should be made and what parameters it will provide. Scaffolding out the mixin in java first, where linting and auto-fill can help guide to the correct results, is a good idea. 
