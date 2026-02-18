@@ -16,9 +16,9 @@ Given the following class:
 
 <<< @/reference/snippets/code/Animal.java
 
-The following "usage" section of each method will build out a `Dog` class in Lua, starting with:
+The following documentation uses this `Dog.lua` file, and specifically pulls in snippets of the relevant sections. The entire file is provided here for reference:
 
-<<< @/reference/snippets/code/Dog.lua#init{Lua}
+<<< @/reference/snippets/code/Dog.lua{Lua}
 
 ---
 
@@ -33,104 +33,59 @@ Creates a field.
 3. `access` - `table?`: Access flags for the field. See [Access Modifier Table](#access-modifier-table)
 4. `value` - `number|string|boolean?`: Optional primitive value for defining the field.
 
+#### Returns
+
+- `userdata [instance]` The class builder for which this field is for.
+
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#field{1 Lua:line-numbers=4}
+Note that this field gets defined in the constructor, which was created with `definesFields()`.
+<<< @/reference/snippets/code/Dog.lua#field{Lua:line-numbers=36}
 
 ---
 
-### `classBuilder:usingSuper(parameters, remapper)`
+### `classBuilder:clinit()`
 
-Creates a reference to a specific constructor on the super class.
-
-#### Parameters
-
-1. `parameters` - `table<userdata [class]>`: The parameters of the `super` constructor.
-2. `remapper` - `function?`: An optional function that accepts the parameters of the constructor that will eventually be built to invoke the `super` constructor. Returns what will be fed into said `super` constructor. If the parameters of the constructor and `super` constructor match, a remapper function is not needed.
+Creates a class initializer builder, primarily used for defining static fields.
 
 #### Returns
 
-- `userdata [instance]` - A reference to the selected `super` constructor.
+- `userdata [instance]` - A [Class Init Builder](/reference/builders/clinit)
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#using{1 Lua:line-numbers=9}
+<<< @/reference/snippets/code/Dog.lua#clinit{Lua:line-numbers=37}
+<<< @/reference/snippets/code/Dog.lua#clinitDef{Lua:line-numbers=5}
 
 ---
 
-### `classBuilder:usingThis(parameters, remapper)`
+### `classBuilder:constructor()`
 
-Creates a reference to a specific constructor on the current class.
-
-#### Parameters
-
-1. `parameters` - `table<userdata [class]>`: The parameters of the `this` constructor.
-2. `remapper` - `function?`: An optional function that accepts the parameters of the constructor that will eventually be built to invoke the `this` constructor. Returns what will be fed into said `this` constructor. If the parameters of the constructor and `this` constructor match, a remapper function is not needed.
+Creates a constructor builder for adding a constructor to this class.
 
 #### Returns
 
-- `userdata [instance]` - A reference to the selected `this` constructor.
+- `userdata [instance]` - A [Constructor Builder](/reference/builders/constructor)
 
 #### Usage
 
-See [`classBuilder:usingSuper()`](#classbuilder-usingsuper-parameters-remapper)
+<<< @/reference/snippets/code/Dog.lua#constructor{Lua:line-numbers=40}
+<<< @/reference/snippets/code/Dog.lua#constructorDef{Lua:line-numbers=9}
 
 ---
 
-### `classBuilder:constructor(parameters, access, definesFields)`
+### `classBuilder:method()`
 
-Creates or overrides a constructor.
+Creates a method builder for creating an entirely new method, or overriding one 
 
-#### Parameters
+#### Returns
 
-1. `parameters` - `table<userdata [class]>`: The parameters of the constructor.
-2. `access` - `table?`: Access flags for the constructor. See [Access Modifier Table](#access-modifier-table)
-3. `definedFields` - `boolean?`: Whether or not to define instance fields on this constructor.
-
+- `userdata [instance]` - A [Method Builder](/reference/builders/method)
 
 #### Usage
 
-If the constructor has a parameter match with a constructor in the parent class, the function to define it is optional. If `definedFields` is set, instance fields created by `classBuilder:field()` are initialized in it. If the access table is nil, the constructor defaults to public access.
-
-<<< @/reference/snippets/code/Dog.lua#constructor{1 Lua:line-numbers=13}
-
----
-
-### `classBuilder:override(methodName, parameters)`
-
-Override an existing method of the parent class.
-
-#### Parameters
-
-1. `methodName` - `string`: The name of the method to override.
-2. `parameters` - `table<userdata [class]>`: The parameters of the method to override.
-
-#### Usage
-
-In addition to overriding the method we must supply a function to the builder on the index matching `methodName`.
-If the overriding method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
-
-<<< @/reference/snippets/code/Dog.lua#override{1 Lua:line-numbers=17}
-
----
-
-### `classBuilder:method(methodName, parameters, returnClass, access)`
-
-Create an entirely new method on the class.
-
-#### Parameters
-
-1. `methodName` - `string`: The method name. Must not exist in any parent classes.
-2. `parameters` - `table<userdata [class]>`: A table representing the parameter types in order.
-3. `returnClass` - `userdata [class]`: The class to be returned by this method.
-4. `access` - `table`: Access flags for the overriding method. See [Access Modifier Table](#access-modifier-table)
-
-#### Usage
-
-If the method to be created is abstract, a function does not have to be submitted.
-If the method is not static then the first parameter to the submitted function is `this`, followed by the rest of the parameters specified in `parameters`.
-
-<<< @/reference/snippets/code/Dog.lua#create{1 Lua:line-numbers=36}
+<<< @/reference/snippets/code/Dog.lua#method{Lua:line-numbers=50}
+<<< @/reference/snippets/code/Dog.lua#methodDef{Lua:line-numbers=13}
 
 ---
 
@@ -144,7 +99,7 @@ Builds the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#build{1 Lua:line-numbers=41}
+<<< @/reference/snippets/code/Dog.lua#build{Lua:line-numbers=61}
 
 ---
 
@@ -194,6 +149,10 @@ Create an inject method. Can **not** be used on mixin builders where `duck` is `
 2. `methodAnnotations` - `table<userdata [instance]>`: Table of annotations to apply to the injector method. Requires exactly one injector annotation. See [Mixin Library - Annotations](/reference/mixin-lib#annotations).
 3. `sugarParameters` - `table<userdata [instance]>`: Table of sugar parameters to apply after the last parameter of the injector method. See [Mixin Library - Sugars](/reference/mixin-lib#sugars).
 
+#### Returns
+
+- `userdata [instance]` - The mixin builder
+
 #### Usage
 
 Modify the constructor to negate the added 5 speed:
@@ -220,6 +179,10 @@ For more information see [Mixin Cheatsheet - `@Accessor`](https://github.com/dbl
 
 1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
+#### Returns
+
+- `userdata [instance]` - The mixin builder
+
 #### Usage
 
 Add a setter and getter accessor for the speed:
@@ -239,6 +202,10 @@ The method name is automatically generated from the target field name. It starts
 #### Parameters
 
 1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
+
+#### Returns
+
+- `userdata [instance]` - The mixin builder
 
 #### Usage
 
@@ -260,6 +227,10 @@ The method name is automatically generated from the target field name. It starts
 
 1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
+#### Returns
+
+- `userdata [instance]` - The mixin builder
+
 #### Usage
 
 Add a setter accessor for gas:
@@ -279,6 +250,10 @@ The method name is automatically generated from the target method name. It start
 #### Parameters
 
 1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Invoker`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Invoker.html) annotation.
+
+#### Returns
+
+- `userdata [instance]` - The mixin builder
 
 #### Usage
 

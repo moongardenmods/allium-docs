@@ -47,6 +47,12 @@ export default defineConfig({
                     { text: 'Mixin Library', link: '/reference/mixin-lib' },
                     { text: 'Class Building', link: '/reference/class-building' },
                 ]
+            },
+            {
+                text: 'Asides',
+                items: [
+                    { text: 'Type Mapping Reference', link: '/reference/asides/type-table' }
+                ]
             }
         ],
 
@@ -71,7 +77,9 @@ export default defineConfig({
             }).use(footnote)
         },
         lineNumbers: true,
+        stripMarkersFromSnippets: true,
     },
+
 
     vite: {
         plugins: [

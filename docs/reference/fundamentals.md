@@ -146,7 +146,7 @@ boolean notLongString = foobar.invert(longString);
 ```
 :::
 
-For more information on conversions, see [Type Mapping Reference](/reference/type-table).
+For more information on conversions, see [Aside - Type Mapping Reference](/reference/asides/type-table).
 
 ::: info
 In these docs, a userdata that wraps a class is represented as `userdata [class]`, while a userdata that wraps an object is represented as `userdata [instance]`. On a `userdata [class]` static methods and fields are accessible, while on a `userdata [instance]` instance methods and fields are accessible.

@@ -1,31 +1,23 @@
--- #region init
 local Animal = require("com.example.Animal")
 
-local dogClassBuilder = java.extendClass(Animal)
--- #endregion init
--- #region field
-dogClassBuilder:field("weight", java.int, { final = true })
+--#region definitionDef
+local dogDefinition = {}
+--#endregion definitionDef
 
-function dogClassBuilder:clinit(class)
+--#region clinitDef
+function dogDefinition:clinit(class)
     -- set static fields here
 end
--- #endregion field
--- #region using
-local superUse = dogClassBuilder:usingSuper({java.int}, function(speed, weight)
-    -- super constructor uses the speed value, so we return that
-    return speed 
-end)
--- #endregion using
--- #region constructor
-dogClassBuilder:constructor(superUse, {java.int,  java.int}, nil, true)
-function dogClassBuilder:init(speed, weight)
+--#endregion clinitDef
+
+--#region constructorDef
+function dogDefinition:constructor(speed, weight)
     self.weight = weight
 end
--- #endregion constructor
--- #region override
-dogClassBuilder:override("noise", {java.boolean, java.int}, {})
+--#endregion constructorDef
 
-function dogClassBuilder:noise(chasing, packSize)
+--#region methodDef
+function dogDefinition:noise(chasing, packSize)
     if self:makesNoise() then
         -- We create isRunning() later, but can use it here!
         if self.weight >= 20 then
@@ -42,16 +34,51 @@ function dogClassBuilder:noise(chasing, packSize)
     end
     return this.super:noise()
 end
--- #endregion override
--- #region create
-dogClassBuilder:method("isRunning", {}, java.boolean, {})
 
-function dogClassBuilder:isRunning()
+function dogDefinition:isRunning()
     return self.speed >= 5
 end
--- #endregion create
--- #region build
-local Dog = dogClassBuilder:build()
+--#endregion methodDef
+
+local Dog = java.extendClass(Animal)
+--#region field
+    :field("weight", java.int, { final = true, private = true })
+--#endregion field
+--#region clinit
+    :clinit(class)
+        :index("clinit")
+        :build()
+--#endregion clinit
+--#region constructor
+    :constructor()
+        :super({java.int})
+        :remapper(function(speed, weight)
+            -- super constructor uses the speed value, so we return that
+            return speed 
+        end)
+        :access({ public = true })
+        :parameters({java.int, java.int})
+        :definesFields()
+        :build()
+--#endregion constructor
+--#region method
+    :method()
+        :override("noise", {java.boolean, java.int})
+        :access({ public = true })
+        :build()
+    :method()
+        :name("isRunning")
+        :access({ public = true })
+        :parameters({})
+        :returnType(java.boolean)
+        :build()
+--#endregion method
+--#region definition
+    :define(dogDefinition)
+--#endregion definition
+--#region build
+    :build()
+--#endregion build
+
 local inu = Dog(0, 10)
 print(inu:noise()) -- prints "*woof!* *woof!*"
---#endregion build

@@ -16,7 +16,7 @@
   "dependencies": {
     "@iconify-json/material-icon-theme": "^1.2.44",
     "markdown-it-footnote": "^4.0.0",
-    "vitepress": "^2.0.0-alpha",
+    "vitepress": "https://pkg.pr.new/vitepress@5014",
     "vitepress-plugin-group-icons": "^1.6.5"
   },
   "devDependencies": {
