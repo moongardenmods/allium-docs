@@ -8,10 +8,6 @@ There are two class builder types. One is for general purpose class building, li
 
 ## Standard Class Builder
 
-::: warning
-The standard class builder is one of the most in-development aspects of Allium. Expect it to change dramatically over the course of the Beta.
-:::
-
 Given the following class:
 
 <<< @/reference/snippets/code/Animal.java
