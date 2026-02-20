@@ -85,9 +85,13 @@ Creates a method builder for creating an entirely new method, or overriding one
 
 ---
 
-### `classBuilder:build()`
+### `classBuilder:build(hooks)`
 
 Builds the class.
+
+#### Parameters
+
+1. `hooks` - `table<function>`: A table that defines all of the functions that will be used in the class constructors/methods/class initializers. Functions should be named based on the index, if one was provided, otherwise use the method name in the case of methods, or the default names in the case of constructors/class initializers (`constructor` and `initializer`, respectively.)
 
 #### Returns
 
@@ -95,7 +99,7 @@ Builds the class.
 
 #### Usage
 
-<<< @/reference/snippets/code/Dog.lua#build{Lua:line-numbers=61}
+<<< @/reference/snippets/code/Dog.lua#build{Lua:line-numbers=60}
 
 ---
 

@@ -73,11 +73,8 @@ local Dog = java.extendClass(Animal)
         :returnType(java.boolean)
         :build()
 --#endregion method
---#region definition
-    :define(dogDefinition)
---#endregion definition
 --#region build
-    :build()
+    :build(dogDefinition)
 --#endregion build
 
 local inu = Dog(0, 10)
