@@ -10,10 +10,10 @@ export default defineConfig({
     head: [
         [
             'link',
-            { rel: 'icon', type: 'image/png', href: '/allium-docs/icon.png' }
+            { rel: 'icon', type: 'image/png', href: '/icon.png' }
         ],
     ],
-    base: "/allium-docs/",
+    base: "/",
     themeConfig: {
         logo: "/icon.png",
         // https://vitepress.dev/reference/default-theme-config

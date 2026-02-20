@@ -2,7 +2,9 @@
 
 The place where the documentation happens. Built using Vitepress.
 
-develop:
+## Develop
+
 ```sh
+pnpm install
 pnpm run dev
 ```
