@@ -25,12 +25,12 @@ However, it's good practice to keep naming consistent between Lua and Java to av
 
 ### Nested Class
 
-In Lua, the last `.` between the outer and inner class becomes a `$`.
+Just like in Java, the nested class gets tacked onto the outer class with a `.`.
 
 ::: code-group
 ```Lua
 local OffsetType = require(
-    "net.minecraft.world.level.block.state.BlockBehaviour$OffsetType"
+    "net.minecraft.world.level.block.state.BlockBehaviour.OffsetType"
 )
 ```
 ```Java
