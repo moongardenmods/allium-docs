@@ -51,7 +51,8 @@ export default defineConfig({
             {
                 text: 'Asides',
                 items: [
-                    { text: 'Type Mapping Reference', link: '/reference/asides/type-table' }
+                    { text: 'Type Mapping Reference', link: '/reference/asides/type-table' },
+                    { text: 'Annotation Tables', link: '/reference/asides/annotation-tables' }
                 ]
             }
         ],

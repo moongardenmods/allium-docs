@@ -1,26 +1,25 @@
--- #region init
+-- #region definition
+local definition = {}
+
+function definition:negateInitSpeed(speed)
+    -- override the speed that was previously set.
+    self.speed = speed
+end
+
+-- Same ID as used in mixinClassBuilder:build()
+mixin.get("car_mixin"):define(definition)
+
+-- Require AFTER defining hooks.
+-- #region duck
 local Car = require("com.example.Car")
+-- #endregion definition
 
 -- Same ID as used in mixinInterfaceBuilder:build()
 local AccessibleCar = mixin.quack("accessible_car")
-local sedan = java.cast(Car(0))
--- #endregion init
--- #region create
-mixin.get("negate_init_speed"):hook(function(this, speed)
-    -- override the speed that was previously set.
-    this.speed = speed
-end)
--- #endregion create
--- #region accessor
+local sedan = java.cast(Car(0), AccessibleCar)
 sedan:setSpeed(10)
 print(sedan:getSpeed())
--- #endregion accessor
--- #region getaccessor
 print("sedan has", sedan:getWheels(), "wheels")
--- #endregion getaccessor
--- #region setaccessor
 sedan:setGas(150)
--- #endregion setaccessor
--- #region invoker
 print("sedan speeding:", sedan:invokeIsSpeeding())
--- #endregion invoker
+-- #endregion duck

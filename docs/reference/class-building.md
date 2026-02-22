@@ -121,7 +121,7 @@ Access modifier tables are used in almost every class builder method. They are d
 
 ## Mixin Class Builder
 
-Obtained from [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck), builds out a class that gets applied as a mixin.
+Obtained from [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck) when `duck` is false, builds out a class that gets applied as a mixin.
 
 <!--@include: ./snippets/mixin-danger.md-->
 
@@ -138,38 +138,47 @@ The sections will also use an arbitrary "entrypoint" script representing the `ma
 <<< @/reference/snippets/code/entrypoint.lua#init{Lua}
 
 
-
-### `mixinBuilder:createInjectMethod(hookId, methodAnnotations, sugarParameters)`
+### `mixinClassBuilder:method(index)`
 
 Create an inject method. Can **not** be used on mixin builders where `duck` is `true`. See [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck).
 
+::: tip
+To inject into constructors, and class initializers, use `<init>()V` and `<clinit>()V` as target method names, respectively. Don't forget to fill in parameters!
+:::
+
 #### Parameters
 
-1. `hookId` - `string`: hook ID to later apply a hook onto this mixin with [`mixin.get()`](/reference/mixin-lib#mixin-get-hookid).
-2. `methodAnnotations` - `table<userdata [instance]>`: Table of annotations to apply to the injector method. Requires exactly one injector annotation. See [Mixin Library - Annotations](/reference/mixin-lib#annotations).
-3. `sugarParameters` - `table<userdata [instance]>`: Table of sugar parameters to apply after the last parameter of the injector method. See [Mixin Library - Sugars](/reference/mixin-lib#sugars).
+1. `index` - `string`: method name to later apply a hook onto this mixin with [`mixin.get()`](/reference/mixin-lib#mixin-get-hookid).
 
 #### Returns
 
-- `userdata [instance]` - The mixin builder
+- `userdata [instance]` - A [Mixin Method Builder](/reference/builders/mixin-method)
+
+---
+
+### `mixinClassBuilder:build(mixinId)`
+
+Builds the mixin.
+
+#### Parameters
+
+1. `mixinId` - `string`: A unique ID representing the mixin class. Used to obtain the hook used to define methods in this mixin.
 
 #### Usage
 
-Modify the constructor to negate the added 5 speed:
+<<< @/reference/snippets/code/CarMixin.lua#class{Lua:line-numbers=1}
 
-<<< @/reference/snippets/code/CarMixin.lua#create{1,6 Lua:line-numbers=3}
+<<< @/reference/snippets/code/entrypoint.lua#definition{Lua:line-numbers=1}
 
-Then in the `main` script entrypoint:
 
-<<< @/reference/snippets/code/entrypoint.lua#create{Lua:line-numbers=6}
 
-::: tip
-To inject into constructors, and static blocks, use `<init>()V` and `<clinit>()V` as target method names, respectively. Don't forget to fill in parameters!
-:::
+## Mixin Interface Builder
+
+Obtained from [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck) when `duck` is true, builds out an interface to access private fields and methods on a class.
 
 ### `mixinInterfaceBuilder:accessor(annotations)`
 
-Defines a setter and getter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation. Can **only** be used on mixin builders where `duck` is `true`. See [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck).
+Defines a setter and getter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 This is a convenience method that simply calls both `mixinInterfaceBuilder:getAccessor()` and `mixinInterfaceBuilder:setAccessor()` with the same `annotations` table.
 
@@ -177,93 +186,61 @@ For more information see [Mixin Cheatsheet - `@Accessor`](https://github.com/dbl
 
 #### Parameters
 
-1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
+1. `annotations` - `table`: An [annotation table](/reference/asides/annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 #### Returns
 
 - `userdata [instance]` - The mixin builder
 
-#### Usage
-
-Add a setter and getter accessor for the speed:
-
-<<< @/reference/snippets/code/CarMixin.lua#accessor{Lua:line-numbers=9}
-
-Mess with it later on in the `main` entrypoint:
-
-<<< @/reference/snippets/code/entrypoint.lua#accessor{Lua:line-numbers=10}
+---
 
 ### `mixinInterfaceBuilder:getAccessor(annotations)`
 
-Defines a getter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation. Can **only** be used on mixin builders where `duck` is `true`. See [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck).
+Defines a getter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 The method name is automatically generated from the target field name. It starts with `get`, then the first letter of the target field name is capitalized, and concatenated with the `get`. For example, given the target field `fooBar`, the method `getFooBar()` is created. 
 
 #### Parameters
 
-1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
+1. `annotations` - `table`: An [annotation table](/reference/asides/annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 #### Returns
 
 - `userdata [instance]` - The mixin builder
 
-#### Usage
-
-Add a getter accessor for the number of wheels:
-
-<<< @/reference/snippets/code/CarMixin.lua#getaccessor{Lua:line-numbers=10}
-
-Mess with it later on in the `main` entrypoint:
-
-<<< @/reference/snippets/code/entrypoint.lua#getaccessor{Lua:line-numbers=12}
+---
 
 ### `mixinInterfaceBuilder:setAccessor(annotations)`
 
-Defines a setter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation. Can **only** be used on mixin builders where `duck` is `true`. See [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck).
+Defines a setter accessor using the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 The method name is automatically generated from the target field name. It starts with `set`, then the first letter of the target field name is capitalized, and concatenated with the `set`. For example, given the target field `fooBar`, the method `setFooBar()` is created. 
 
 #### Parameters
 
-1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
+1. `annotations` - `table`: An [annotation table](/reference/asides/annotation-tables) that matches the [`@Accessor`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Accessor.html) annotation.
 
 #### Returns
 
 - `userdata [instance]` - The mixin builder
 
-#### Usage
-
-Add a setter accessor for gas:
-
-<<< @/reference/snippets/code/CarMixin.lua#setaccessor{Lua:line-numbers=11}
-
-Mess with it later on in the `main` entrypoint:
-
-<<< @/reference/snippets/code/entrypoint.lua#setaccessor{Lua:line-numbers=13}
+---
 
 ### `mixinInterfaceBuilder:invoker(annotations)`
 
-Defines an invoker using the [`@Invoker`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Invoker.html) annotation. Can **only** be used on mixin builders where `duck` is `true`. See [`mixin.to()`](/reference/mixin-lib#mixin-to-targetclass-interfaces-targetenvironment-duck).
+Defines an invoker using the [`@Invoker`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Invoker.html) annotation.
 
 The method name is automatically generated from the target method name. It starts with `invoke`, then the first letter of the target method name is capitalized, and concatenated with the `invoke`. For example, given the target method `fooBar()`, the method `invokeFooBar()` is created. 
 
 #### Parameters
 
-1. `annotations` - `table`: An [annotation table](#annotation-tables) that matches the [`@Invoker`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Invoker.html) annotation.
+1. `annotations` - `table`: An [annotation table](/reference/asides/annotation-tables) that matches the [`@Invoker`](https://jenkins.liteloader.com/view/Other/job/Mixin/javadoc/index.html?org/spongepowered/asm/mixin/gen/Invoker.html) annotation.
 
 #### Returns
 
 - `userdata [instance]` - The mixin builder
 
-#### Usage
-
-Add an invoker for `isSpeeding()`:
-
-<<< @/reference/snippets/code/CarMixin.lua#invoker{Lua:line-numbers=12}
-
-Mess with it later on in the `main` entrypoint:
-
-<<< @/reference/snippets/code/entrypoint.lua#invoker{Lua:line-numbers=14}
+---
 
 ### `mixinBuilder:build(mixinId)`
 
@@ -271,8 +248,10 @@ Builds the mixin.
 
 #### Parameters
 
-1. `mixinId?` - `string`: A unique ID representing the mixin class. Used to obtain the duck interface for accessing fields and invoking methods. Only required if the mixin builder was created with `duck` set to `true`.
+1. `mixinId` - `string`: A unique ID representing the duck interface. Used to obtain the interface for later use.
 
 #### Usage
 
-<<< @/reference/snippets/code/CarMixin.lua#build{Lua:line-numbers=13}
+<<< @/reference/snippets/code/CarMixin.lua#interface{Lua:line-numbers=1}
+
+<<< @/reference/snippets/code/entrypoint.lua#duck{Lua:line-numbers=1}
