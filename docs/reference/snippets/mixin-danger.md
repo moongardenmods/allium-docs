@@ -6,5 +6,5 @@ Mixins are a very complicated topic that's very hard to grasp without a decent u
 :::
 
 ::: danger DOUBLE DANGER
-Due to a limitation in how mixins are applied, if another mod chooses to apply mixins during the `preLaunch` phase, all Allium script mixins will **NOT** apply. If a script mixin appears to not be applying properly, this might be why.
+Due to a limitation in how mixins are applied, if another mod chooses to apply mixins during the `preLaunch` phase, all Allium script mixins will **NOT** apply. If a script's mixins appear to not be applying properly, this might be why. See [allium#56](https://github.com/moongardenmods/allium/issues/56) for more information.
 :::

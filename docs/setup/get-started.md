@@ -78,7 +78,7 @@ If the only goal is to create a simple script with little to no references to ga
 An example of the usual game instance with Allium
 :::
 
-::: warn
+::: warning
 Note that this method is not advised, and is only presented as a *possible* way of using Allium.
 :::
 

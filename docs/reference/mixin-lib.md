@@ -8,10 +8,6 @@ The following functions are provided to scripts via the `mixin` global.
 
 <!--@include: ./snippets/mixin-danger.md-->
 
-::: warning
-This page is under construction
-:::
-
 ## Functions
 
 ### `mixin.to(targetClass, interfaces, targetEnvironment, duck)`
