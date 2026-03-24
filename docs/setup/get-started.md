@@ -11,12 +11,12 @@ This documentation assumes you have a general understanding of:
 2. How to download and install Java for the version of Minecraft you want to devlop for, on the operating system you're running.
 
 ::: info
-To an extent, certain IDE's abstract these assumptions into an understanding of how to use the IDE. For example, IntelliJ IDEA provides an in-IDE means of downloading Java versions, some of which have added functionality that support using hot-reloading while debugging.
+To an extent, certain IDEs abstract these assumptions into an understanding of how to use the IDE. For example, IntelliJ IDEA provides an in-IDE means of downloading Java versions, some of which have added functionality that support using hot-reloading while debugging.
 :::
 
 ## Installation
 
-In general, for the least amount of friction while developing, it is recommended to do so in an environment that is also conducive to Java modding. Grabbing class names and understanding what the game is doing are made much easier in an IDE that's set up for a java mod. This guide demonstrates how to get set up via IntelliJ, but VSCode and Eclipse are also viable IDE's.
+In general, for the least amount of friction while developing, it is recommended to do so in an environment that is also conducive to Java modding. Grabbing class names and understanding what the game is doing are made much easier in an IDE that's set up for a java mod. This guide demonstrates how to get set up via IntelliJ, but VSCode and Eclipse are also viable IDEs.
 
 ### The Easy Way
 
@@ -78,4 +78,10 @@ If the only goal is to create a simple script with little to no references to ga
 An example of the usual game instance with Allium
 :::
 
+::: warn
 Note that this method is not advised, and is only presented as a *possible* way of using Allium.
+:::
+
+::: info
+Should you disregard the above warning, a source-code viewer like [mcsrc.dev](https://mcsrc.dev/) may prove to be useful.
+:::
