@@ -82,7 +82,7 @@ Gets the version provided by the script manifest.
 
 - `string`: The script version.
 
-### `script:regsiterReloadable(location)`
+### `script:registerReloadable(location)`
 
 Register a path to a file relative to the script root that gets executed when added, and when the script gets reloaded. This method is useful for registering script resources, hooking into events, or hooking into certain mixins. 
 
