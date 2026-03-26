@@ -61,7 +61,7 @@ jobs:
         run: pnpm install
       - name: Build with VitePress
         env:
-          BASE: /${{ matrix.tags }}/
+          BASE: /allium-docs/${{ matrix.tags }}/
         run: pnpm run build
       - name: Upload ${{ matrix.tags }} Artifact
         uses: actions/upload-artifact@v4
