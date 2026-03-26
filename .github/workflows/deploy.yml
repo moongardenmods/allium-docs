@@ -34,7 +34,7 @@ jobs:
       - name: Build Matrix
         id: create-matrix
         run: |
-          raw=`git for-each-ref --no-contains="origin"  --format='%(refname:short)' refs/tags`;
+          raw=`git for-each-ref --format='%(refname:short)' refs/tags`;
           tags=`printf '%s\n' "${raw[@]}" | jq -R . | jq -s -c .`;
           echo "tags=${tags}" >> $GITHUB_OUTPUT
 
