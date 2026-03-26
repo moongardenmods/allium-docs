@@ -57,6 +57,16 @@ export default defineConfig({
             }
         ],
 
+        editLink: {
+            pattern: 'https://github.com/moongardenmods/allium-docs/edit/main/docs/:path',
+            text: 'Edit this page on GitHub'
+        },
+
+        footer: {
+            message: 'Released under the MIT License.',
+            copyright: 'Copyright © 2026-present hugeblank'
+        },
+
         socialLinks: [
             { icon: 'modrinth', link: 'https://modrinth.com/mod/allium' },
             { icon: 'github', link: 'https://github.com/moongardenmods/allium' },
