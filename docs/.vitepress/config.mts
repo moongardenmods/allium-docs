@@ -7,9 +7,9 @@ import { groupIconVitePlugin, groupIconMdPlugin } from 'vitepress-plugin-group-i
 function nav(): DefaultTheme.NavItem[] {
     const items = []
     if (!process.env.VERSION) {
-        // items.push({ text: "Prior Releases", link: "" })
+        // items.push({ text: "Prior Releases", link: "", target: "_self" })
     } else {
-        items.push({ text: "Latest Release", link: "https://allium.moongarden.dev/" })
+        items.push({ text: "Latest Release", link: "https://allium.moongarden.dev/", target: "_self" })
     }
     items.push(
         { text: "Contributing", link: "" },
