@@ -3,6 +3,7 @@ import footnote from 'markdown-it-footnote'
 import { groupIconVitePlugin, groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 
 // https://vitepress.dev/reference/site-config
+
 export default defineConfig({
     title: "Allium",
     description: "The Lua script loader for Minecraft",
@@ -13,7 +14,7 @@ export default defineConfig({
             { rel: 'icon', type: 'image/png', href: '/icon.png' }
         ],
     ],
-    base: "/",
+    base: process.env.BASE,
     themeConfig: {
         logo: "/icon.png",
         // https://vitepress.dev/reference/default-theme-config
