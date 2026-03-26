@@ -62,6 +62,7 @@ jobs:
       - name: Build with VitePress
         env:
           BASE: /allium-docs/${{ matrix.tags }}/
+          VERSION: ${{ matrix.tags }}
         run: pnpm run build
       - name: Upload ${{ matrix.tags }} Artifact
         uses: actions/upload-artifact@v4

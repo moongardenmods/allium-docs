@@ -1,8 +1,38 @@
-import { defineConfig } from 'vitepress'
+import { DefaultTheme, defineConfig } from 'vitepress'
 import footnote from 'markdown-it-footnote'
 import { groupIconVitePlugin, groupIconMdPlugin } from 'vitepress-plugin-group-icons'
 
 // https://vitepress.dev/reference/site-config
+
+function nav(): DefaultTheme.NavItem[] {
+    const items = []
+    if (!process.env.VERSION) {
+        // items.push({ text: "Prior Releases", link: "" })
+    } else {
+        items.push({ text: "Latest Release", link: "https://allium.moongarden.dev/" })
+    }
+    items.push(
+        { text: "Contributing", link: "" },
+        {
+            text: 'Allium',
+            link: 'https://github.com/moongardenmods/allium/blob/main/CONTRIBUTING.md'
+        },
+        {
+            text: 'Allium Docs',
+            link: 'https://github.com/moongardenmods/allium-docs/blob/main/CONTRIBUTING.md'
+        }
+    )
+
+    return [
+        { text: 'Home', link: '/' },
+        { text: 'Reference', link: '/reference/fundamentals' },
+        {
+            text: process.env.VERSION,
+            items
+        }
+    ]
+}
+
 
 export default defineConfig({
     title: "Allium",
@@ -18,10 +48,7 @@ export default defineConfig({
     themeConfig: {
         logo: "/icon.png",
         // https://vitepress.dev/reference/default-theme-config
-        nav: [
-            { text: 'Home', link: '/' },
-            { text: 'Reference', link: '/reference/fundamentals' },
-        ],
+        nav: nav(),
 
         sidebar: [
             {
@@ -92,6 +119,7 @@ export default defineConfig({
         stripMarkersFromSnippets: true,
     },
 
+    lastUpdated: true,
 
     vite: {
         plugins: [

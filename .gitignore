@@ -6,6 +6,7 @@
 .DS_Store
 .idea
 .temp
+.env
 .vite_opt_cache
 .vscode
 dist
