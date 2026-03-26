@@ -1,6 +1,6 @@
-# Allium Wiki
+# Allium Docs
 
-The place where the documentation happens. Built using Vitepress.
+The place where the documentation for Allium happens. Built using Vitepress.
 
 ## Develop
 
